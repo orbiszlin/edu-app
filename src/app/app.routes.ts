@@ -10,5 +10,9 @@ export const routes: Routes = [
     path: 'folder/:id',
     loadComponent: () =>
       import('./folder/folder.page').then((m) => m.FolderPage),
+  },  {
+    path: 'avatar-settings',
+    loadComponent: () => import('./pages/avatar-settings/avatar-settings.page').then( m => m.AvatarSettingsPage)
   },
+
 ];

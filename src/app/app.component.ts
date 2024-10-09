@@ -19,7 +19,7 @@ export class AppComponent {
     { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
     { title: 'Archived', url: '/folder/archived', icon: 'archive' },
     { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Avatar Settings', url: '/folder/spam', icon: 'warning' },
+    { title: 'Avatar Settings', url: '/avatar-settings', icon: 'warning' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor() {
