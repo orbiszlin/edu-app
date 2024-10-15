@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Achievements</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    @for (square of squares; track $index) {
+      <div class="square">
+        <div class="svg-slot">
+          <!-- Zde vložte SVG nebo jiný obsah -->
+          <ng-content></ng-content>
+        </div>
+      </div>
+    }
+  </div>
+</ion-content>
+

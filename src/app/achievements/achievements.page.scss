@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; // Nastavení mezery mezi čtverci
+  justify-content: center;
+}
+
+.square {
+  width: 164px;
+  height: 121px;
+  background-color: #598BC8;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg-slot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
