@@ -1,0 +1,73 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Manage Questions</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Grid rozložení -->
+  <ion-grid class="full-height">
+    <ion-row class="full-height">
+      <!-- Levá část stránky -->
+      <ion-col size="5" class="left-section">
+        <!-- Tlačítka v levé části -->
+        <div class="button-group">
+          <ion-button expand="block" class="custom-button" color="light">Back</ion-button>
+          <ion-button expand="block" class="custom-button" color="light">Add</ion-button>
+        </div>
+
+        <!-- Pole pro vložení otázky -->
+        <ion-item class="question-box">
+          <ion-label position="floating">Enter Question</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+
+        <!-- Vkládací pole pro odpovědi -->
+        <div class="answers-section">
+          <ion-item>
+            <ion-label position="floating">Answer 1</ion-label>
+            <ion-input></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Answer 2</ion-label>
+            <ion-input></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Answer 3</ion-label>
+            <ion-input></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Answer 4</ion-label>
+            <ion-input></ion-input>
+          </ion-item>
+        </div>
+      </ion-col>
+
+      <!-- Modrá čára uprostřed -->
+      <ion-col size="2" class="divider"></ion-col>
+
+      <!-- Pravá část stránky -->
+      <ion-col size="5" class="right-section">
+        <!-- Tlačítka v pravé části -->
+        <div class="button-group">
+          <ion-button expand="block" class="custom-button" color="light">Modify</ion-button>
+          <ion-button expand="block" class="custom-button" color="light">Remove</ion-button>
+        </div>
+
+        <!-- Seznam otázek -->
+        <h2 class="questions-list-title">Questions List</h2>
+        <div class="questions-list">
+          <!-- Zde budou otázky (zatím prázdné vizuální pole) -->
+          <ion-list>
+            <ion-item>
+              <ion-label>Sample Question 1</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Sample Question 2</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
