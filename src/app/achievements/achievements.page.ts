@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -22,15 +22,13 @@ import {
     FormsModule
   ]
 })
-export class AchievementsPage implements OnInit {
+export class AchievementsPage  {
   squares: any[] = Array(20).fill(0); // Vytvoříme pole s 20 čtverci
   clickedSquare: number | null = null; // Sledování, který čtverec byl kliknut
 
   constructor() { }
 
-  ngOnInit() {
-    // Můžeš přidat další logiku, pokud bude potřeba při inicializaci komponenty
-  }
+
 
   toggleText(index: number): void {
     // Přepínání mezi zobrazením a skrytím textu
