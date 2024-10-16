@@ -1,56 +1,18 @@
 .full-height {
-  height: 100vh; /* Celá výška stránky */
+  height: 100vh; /* Zajišťuje, že grid zabírá celou výšku stránky */
 }
 
-.button-group {
+.divider-col {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.custom-button {
-  border-radius: 8%; /* Zaoblené rohy 8% */
-  height: 50px;
-  width: 50px; /* Čtvercová tlačítka */
-  background-color: blue;
-  color: white; /* Tlačítka budou mít bílý text */
+  justify-content: center;
 }
 
 .divider {
-  background-color: blue; /* Modrá čára */
-  width: 5px; /* Šířka pásu */
-}
-
-.left-section, .right-section {
-  padding: 10px;
-}
-
-.question-box {
-  margin-top: 20px;
-}
-
-.answers-section ion-item {
-  margin-top: 10px;
-}
-
-.questions-list-title {
-  margin-top: 20px;
-  font-size: 1.2rem;
-  color: blue; /* Barva nadpisu modrá */
-}
-
-.questions-list {
-  margin-top: 10px;
-  max-height: 60vh;
-  overflow-y: auto; /* Rolování pro seznam otázek */
+  height: 100%; /* Výška od horní části stránky až po spodní */
+  width: 0.5cm; /* Šířka modré čáry */
+  background-color: var(--ion-color-primary); /* Barva je nastavena na primární barvu tlačítek */
 }
 
 ion-item {
-  --background: transparent; /* Transparentní pozadí otázek */
-  --border-color: blue; /* Modré okraje pro vstupní pole */
-}
-
-ion-label {
-  color: blue; /* Modré popisky */
+  --min-height: 60px; /* Zajištění stejné minimální výšky pro otázky a odpovědi */
 }
