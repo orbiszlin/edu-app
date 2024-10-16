@@ -24,10 +24,20 @@ import {
 })
 export class AchievementsPage implements OnInit {
   squares: any[] = Array(20).fill(0); // Vytvoříme pole s 20 čtverci
+  clickedSquare: number | null = null; // Sledování, který čtverec byl kliknut
 
   constructor() { }
 
   ngOnInit() {
     // Můžeš přidat další logiku, pokud bude potřeba při inicializaci komponenty
+  }
+
+  toggleText(index: number): void {
+    // Přepínání mezi zobrazením a skrytím textu
+    if (this.clickedSquare === index) {
+      this.clickedSquare = null; // Skryj text, pokud je znovu kliknuto
+    } else {
+      this.clickedSquare = index; // Nastav kliknutý čtverec
+    }
   }
 }
