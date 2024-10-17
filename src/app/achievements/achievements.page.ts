@@ -23,12 +23,13 @@ import {
   ]
 })
 export class AchievementsPage implements OnInit {
-  squares: { svg: string; text: string; expanded: boolean }[] = []; // Přidáme pole s informací, zda je čtverec rozbalený
+  squares: { svg: string; text: string; expanded: boolean }[] = [];
+  clickedSquare: number | null = null; // Pro sledování kliknutého čtverce
 
   constructor() {}
 
   ngOnInit() {
-    // Inicializujeme pole s objekty, které obsahují cestu k SVG, text a stav rozbalení pro každý čtverec
+    // Inicializace pole s objekty pro každý čtverec
     this.squares = [
       { svg: 'assets/svgs/icon1.svg', text: 'Text for Square 1', expanded: false },
       { svg: 'assets/svgs/icon2.svg', text: 'Text for Square 2', expanded: false },
@@ -54,6 +55,19 @@ export class AchievementsPage implements OnInit {
   }
 
   toggleText(index: number) {
-    this.squares[index].expanded = !this.squares[index].expanded;
+    // Pokud kliknutý čtverec je stejný jako ten, který byl již kliknutý, zavři ho
+    if (this.clickedSquare === index) {
+      this.squares[index].expanded = false;
+      this.clickedSquare = null;
+    } else {
+      // Zavři všechny ostatní čtverce
+      this.squares.forEach((square, i) => {
+        square.expanded = false; // Zavři všechny čtverce
+      });
+
+      // Otevři aktuálně kliknutý čtverec
+      this.squares[index].expanded = true;
+      this.clickedSquare = index; // Ulož index kliknutého čtverce
+    }
   }
 }
