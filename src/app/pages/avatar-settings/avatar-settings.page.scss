@@ -1,3 +1,19 @@
 ion-menu-button {
   color: var(--ion-color-primary);
 }
+
+ion-input {
+  border: 3px solid var(--ion-color-primary);
+  border-radius: 10px;
+  max-width: 370px ;
+  max-height: 90px ;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  gap: 4rem;
+}
