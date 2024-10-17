@@ -1,22 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { OverlayEventDetail } from '@ionic/core/components';
 import {
   IonButton,
-  IonCard,
-  IonCardContent,
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonIcon,
-  IonInput,
   IonItem,
+  IonInput,
   IonLabel,
   IonList,
-  IonRow,
+  IonContent,
+  IonHeader,
+  IonToolbar,
   IonTitle,
-  IonToolbar
+  IonRow,
+  IonCol,
+  IonIcon,
+  IonCard,
+  IonCardContent,
+  IonGrid,
+  IonModal,
+  IonButtons,
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -25,129 +28,135 @@ import {
   styleUrls: ['./questions.page.scss'],
   standalone: true,
   imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    IonModal,
+    IonButton,
+    IonItem,
+    IonInput,
+    IonLabel,
+    IonList,
     IonContent,
     IonHeader,
-    IonTitle,
     IonToolbar,
-    CommonModule,
-    FormsModule,
+    IonTitle,
     IonRow,
     IonCol,
-    IonGrid,
-    IonLabel,
-    IonItem,
-    IonList,
-    IonButton,
-    IonInput,
+    IonIcon,
     IonCard,
     IonCardContent,
-    IonIcon
-  ]
+    IonGrid,
+    IonButtons,
+  ],
 })
 export class QuestionsPage implements OnInit {
-  newQuestion: string = '';
-  newAnswers: string[] = ['', '', '', ''];
-  questions: { text: string; answers: string[]; showAnswers: boolean }[] = [];
-  history: { action: string; question?: string; answers?: string[] }[] = [];
+  @ViewChild(IonModal) modal!: IonModal; // Odkaz na modální okno
 
-  constructor() {}
+  questionForm!: FormGroup; // Reaktivní formulář
+  questions: { text: string; answers: string[]; showAnswers: boolean }[] = []; // Seznam otázek
+  selectedQuestion: number | null = null; // Vybraná otázka
+  isEditing: boolean = false; // Flag pro editaci
+
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
+    // Načíst otázky při inicializaci
     this.loadQuestions();
+    // Inicializace formuláře
+    this.initializeForm();
   }
 
   loadQuestions() {
-    const storedQuestions = localStorage.getItem('questions');
-    if (storedQuestions) {
-      this.questions = JSON.parse(storedQuestions);
-    }
+    // Načíst otázky ze statického pole
+    this.questions = [];
   }
 
-  saveQuestions() {
-    localStorage.setItem('questions', JSON.stringify(this.questions));
+  initializeForm() {
+    this.questionForm = this.fb.group({
+      question: [''], // Pole pro otázku
+      answers: this.fb.array([this.fb.control(''), this.fb.control(''), this.fb.control(''), this.fb.control('')]), // Pole pro odpovědi
+    });
   }
 
-  addQuestion() {
-    if (this.newQuestion.trim() && this.newAnswers.every(answer => answer.trim())) {
-      // Uložení otázky a odpovědí
-      this.questions.push({
-        text: this.newQuestion,
-        answers: this.newAnswers.slice(),
-        showAnswers: false
-      });
-
-      this.history.push({ action: 'add', question: this.newQuestion, answers: this.newAnswers.slice() });
-
-      this.saveQuestions();
-
-      this.newQuestion = '';
-      this.newAnswers = ['', '', '', ''];
-    } else {
-      alert('Please fill in all fields');
-    }
+  get answersControls() {
+    return (this.questionForm.get('answers') as FormArray).controls; // Přístup k ovládacím prvkům odpovědí
   }
 
   goBack() {
-    const lastAction = this.history.pop();
-    if (lastAction) {
-      if (lastAction.action === 'add') {
-        this.newQuestion = lastAction.question || '';
-        this.newAnswers = lastAction.answers ? lastAction.answers.slice() : ['', '', '', ''];
-        this.questions.pop();
-
-        // Uložení otázek do local storage
-        this.saveQuestions();
-      } else if (lastAction.action === 'toggle') {
-        const index = this.questions.findIndex(q => q.text === lastAction.question);
-        if (index !== -1) {
-          this.questions[index].showAnswers = false;
-        }
-      }
-    } else {
-      alert('No previous action to revert to.');
-    }
+    // Zatím nic neděláme, můžeš přidat logiku později
   }
 
-  toggleAnswers(index: number) {
+  selectQuestion(index: number) {
+    // Vyber otázku a přepni viditelnost odpovědí
+    this.selectedQuestion = index;
     this.questions[index].showAnswers = !this.questions[index].showAnswers;
-    this.history.push({ action: 'toggle', question: this.questions[index].text });
+  }
+
+  openModal() {
+    this.resetForm(); // Resetovat formulář před otevřením
+    this.modal.present(); // Otevřít modální okno
   }
 
   removeQuestion() {
-    const selectedQuestionIndex = this.questions.findIndex(q => q.showAnswers);
-    if (selectedQuestionIndex !== -1) {
-      this.history.push({
-        action: 'remove',
-        question: this.questions[selectedQuestionIndex].text,
-        answers: this.questions[selectedQuestionIndex].answers
-      });
-      this.questions.splice(selectedQuestionIndex, 1);
-
-      this.saveQuestions();
-    } else {
-      alert('Please select a question to remove.');
+    if (this.selectedQuestion !== null) {
+      this.questions.splice(this.selectedQuestion, 1); // Odebrat vybranou otázku
+      this.selectedQuestion = null; // Resetovat vybranou otázku
     }
   }
 
   modifyQuestion() {
-    const selectedQuestionIndex = this.questions.findIndex(q => q.showAnswers);
-    if (selectedQuestionIndex !== -1) {
-      const questionToModify = this.questions[selectedQuestionIndex];
-      this.newQuestion = questionToModify.text;
-      this.newAnswers = questionToModify.answers.slice();
-
-      this.questions.splice(selectedQuestionIndex, 1);
-
-      this.history.push({
-        action: 'modify',
-        question: questionToModify.text,
-        answers: questionToModify.answers
+    if (this.selectedQuestion !== null) {
+      const questionToEdit = this.questions[this.selectedQuestion];
+      this.questionForm.patchValue({
+        question: questionToEdit.text, // Předvyplnit otázku
+        answers: questionToEdit.answers // Předvyplnit odpovědi
       });
-
-
-      this.saveQuestions();
-    } else {
-      alert('Please select a question to modify.');
+      this.isEditing = true; // Přepnout na režim úpravy
+      this.modal.present(); // Otevřít modální okno
     }
+  }
+
+  cancel() {
+    this.modal.dismiss(null, 'cancel'); // Zavřít modální okno bez uložení
+    this.resetForm(); // Resetovat formulář
+  }
+
+  confirm() {
+    const { question, answers }: { question: string; answers: string[] } = this.questionForm.value; // Explicitní typy
+
+    // Kontrola, zda je otázka nebo alespoň jedna odpověď vyplněná
+    if (question.trim() || answers.some((answer: string) => answer.trim())) { // Přidání typu pro answer
+      if (this.isEditing) {
+        // Aktualizace existující otázky
+        const questionToEdit = this.questions[this.selectedQuestion!];
+        questionToEdit.text = question; // Aktualizovat text otázky
+        questionToEdit.answers = answers; // Aktualizovat odpovědi
+      } else {
+        // Přidání nové otázky
+        this.questions.push({
+          text: question,
+          answers: answers,
+          showAnswers: false,
+        });
+      }
+
+      this.resetForm(); // Resetovat formulář
+      this.modal.dismiss(null, 'confirm'); // Zavřít modální okno
+    } else {
+      alert('Please fill in at least the question or one answer'); // Kontrola, zda jsou pole vyplněna
+    }
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent;
+    if (ev.detail.role === 'confirm') {
+      console.log('Confirmed');
+    }
+  }
+
+  resetForm() {
+    this.questionForm.reset(); // Resetovat formulář
+    this.isEditing = false; // Nastavit režim úpravy na false
+    this.selectedQuestion = null; // Resetovat vybranou otázku
   }
 }
