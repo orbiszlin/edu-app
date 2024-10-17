@@ -11,13 +11,26 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-grid class="grid-center">
-    <ion-row class="row-center">
-      <ion-col class="col-center">
-        <ion-button>ads</ion-button>
-        <ion-button>affg</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="aha">
+    <ion-grid class="grid-center">
+     <ion-row class="row-center">
+        <ion-col class="col-center">
+          <ion-button class="button" color="primary" id="present-alert">Sign in with Microsoft</ion-button>
+          <ion-button class="button" color="primary" id="present-alert1">Enter a code</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-alert
+    trigger="present-alert"
+    header="Work in progress"
+    [buttons]="alertButtons"
+  ></ion-alert>
+  <ion-alert
+    trigger="present-alert1"
+    header="Work in progress"
+    [buttons]="alertButtons"
+  ></ion-alert>
 </ion-content>
 

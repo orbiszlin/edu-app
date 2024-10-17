@@ -1,25 +1,17 @@
-.center-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.grid-center {
-  height: 100%; /* Ensures grid takes full height */
-}
-
-.row-center {
-  height: 100%; /* Ensures row takes full height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .col-center {
   display: flex;
   flex-direction: column; /* Arrange buttons in a column */
   align-items: center; /* Center buttons horizontally */
   justify-content: center; /* Center buttons vertically */
   gap: 10px; /* Space between buttons */
+}
+
+.button {
+  width: 35%;
+}
+
+.aha {
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
