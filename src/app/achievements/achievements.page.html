@@ -8,19 +8,21 @@
   <div class="container">
     <!-- Velký čtverec uprostřed nahoře -->
     <div class="new-square">
-      <span class="square-text">Complete (0%)</span>
+      <span class="square-text">Complete (-%)</span>
     </div>
-
 
     <!-- Grid s 20 čtverci uspořádaný po 5 čtvercích v řadě -->
     <div class="grid-container">
-      @for (square of squares; track $index) {
-        <div class="square" (click)="toggleText($index)">
-          <div class="svg-slot">
-            <div *ngIf="clickedSquare === $index" class="square-text">Text for Square {{$index + 1}}</div>
-          </div>
+      <div *ngFor="let square of squares; let index = index"
+           class="square"
+           (click)="toggleText(index)"
+           [class.expanded]="square.expanded">
+        <div class="svg-slot" *ngIf="!square.expanded">
+          <!-- SVG pro každý čtverec, pokud není rozbalen -->
+          <img [src]="square.svg" alt="SVG Icon" />
         </div>
-      }
+        <div *ngIf="square.expanded" class="square-text">{{ square.text }}</div>
+      </div>
     </div>
   </div>
 </ion-content>

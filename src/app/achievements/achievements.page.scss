@@ -1,8 +1,8 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Horizontální zarovnání velkého čtverce a gridu */
-  margin-top: 20px; /* Posun celého obsahu o 5 pixelů dolů */
+  align-items: center;
+  margin-top: 5px;
 }
 
 .new-square {
@@ -10,42 +10,36 @@
   height: 86.44px;
   background-color: #5B6CB2;
   border-radius: 10px;
-  margin-bottom: 16px; /* Mezera mezi velkým čtvercem a gridem */
-  display: flex; /* Použijeme flex pro zarovnání textu */
-  align-items: center; /* Vertikální zarovnání textu na střed */
-  justify-content: center; /* Horizontální zarovnání textu na střed */
-  color: white; /* Barva textu, aby byla dobře viditelná */
-  font-size: 32px; /* Velikost textu zvětšena na dvojnásobek */
-  text-align: center; /* Zarovnání textu na střed */
-  padding: 10px; /* Vnitřní okraje pro lepší vzhled */
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Pět sloupců, flexibilní šířka */
-  grid-template-rows: repeat(4, auto); /* Čtyři řady s automatickou výškou */
-  gap: 8px; /* Mezera mezi čtverci */
-  justify-content: center; /* Horizontální zarovnání gridu */
-  width: 100%; /* Celá šířka kontejneru */
-  max-width: 800px; /* Maximální šířka pro lepší responsivitu */
-  margin: 0 auto; /* Centrum gridu */
+  grid-template-columns: repeat(5, 164px);
+  grid-template-rows: repeat(4, 121px);
+  gap: 8px;
+  justify-content: center;
 }
 
 .square {
-  width: 164px; // Pevná šířka
-  height: 121px; // Pevná výška
-  background-color: #598BC8; // Barva pozadí pro jednotlivé čtverce
-  border-radius: 10px; // Zaoblení rohů
-  display: flex; // Použijeme flex pro zarovnání obsahu
-  align-items: center; // Vertikální zarovnání obsahu na střed
-  justify-content: center; // Horizontální zarovnání obsahu na střed
-  color: white; // Barva textu
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Měkký stín pro efekt
-  transition: transform 0.3s ease; // Plynulý přechod pro efekt zvětšení
+  background-color: #598BC8;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 164px;
+  height: 121px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
 
-  &:hover {
-    transform: scale(1.5); // Zvětšení čtverce o 10% při hoveru
-  }
+.square.expanded {
+  transform: scale(1.2); /* Zvětšení čtverce při kliknutí */
+  background-color: #4A76B1; /* Mírná změna barvy pro efekt */
 }
 
 .svg-slot {
@@ -57,7 +51,8 @@
 }
 
 .square-text {
-  color: white; /* Barva textu */
-  font-size: 32px; /* Velikost textu zvětšena na dvojnásobek */
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  font-size: 32px; /* Zvětšeno na dvojnásobek (původně 32px) */
 }
-
