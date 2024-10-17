@@ -1,5 +1,5 @@
 .full-height {
-  height: 100vh; /* Zajišťuje, že grid zabírá celou výšku stránky */
+  height: 100vh;
 }
 
 .divider-col {
@@ -8,11 +8,11 @@
 }
 
 .divider {
-  height: 100%; /* Výška od horní části stránky až po spodní */
-  width: 0.5cm; /* Šířka modré čáry */
-  background-color: var(--ion-color-primary); /* Barva je nastavena na primární barvu tlačítek */
+  height: 100%;
+  width: 0.5cm;
+  background-color: var(--ion-color-primary);
 }
 
 ion-item {
-  --min-height: 60px; /* Zajištění stejné minimální výšky pro otázky a odpovědi */
+  --min-height: 60px;
 }

@@ -48,23 +48,23 @@ export class QuestionsPage implements OnInit {
   newQuestion: string = '';
   newAnswers: string[] = ['', '', '', ''];
   questions: { text: string; answers: string[]; showAnswers: boolean }[] = [];
-  history: { action: string; question?: string; answers?: string[] }[] = []; // Historie akcí
+  history: { action: string; question?: string; answers?: string[] }[] = [];
 
   constructor() {}
 
   ngOnInit() {
-    this.loadQuestions(); // Načíst otázky z local storage při inicializaci
+    this.loadQuestions();
   }
 
   loadQuestions() {
     const storedQuestions = localStorage.getItem('questions');
     if (storedQuestions) {
-      this.questions = JSON.parse(storedQuestions); // Načtení a parsování otázek z local storage
+      this.questions = JSON.parse(storedQuestions);
     }
   }
 
   saveQuestions() {
-    localStorage.setItem('questions', JSON.stringify(this.questions)); // Uložení otázek do local storage
+    localStorage.setItem('questions', JSON.stringify(this.questions));
   }
 
   addQuestion() {
@@ -73,16 +73,13 @@ export class QuestionsPage implements OnInit {
       this.questions.push({
         text: this.newQuestion,
         answers: this.newAnswers.slice(),
-        showAnswers: false // Zajištění, že odpovědi jsou skryté při přidání
+        showAnswers: false
       });
 
-      // Uložení akce do historie
       this.history.push({ action: 'add', question: this.newQuestion, answers: this.newAnswers.slice() });
 
-      // Uložení otázek do local storage
       this.saveQuestions();
 
-      // Vyprázdnění vstupních polí
       this.newQuestion = '';
       this.newAnswers = ['', '', '', ''];
     } else {
@@ -94,17 +91,16 @@ export class QuestionsPage implements OnInit {
     const lastAction = this.history.pop();
     if (lastAction) {
       if (lastAction.action === 'add') {
-        // Vrátit otázku a odpovědi zpět
-        this.newQuestion = lastAction.question || ''; // Zajištění, že bude mít nějakou hodnotu
-        this.newAnswers = lastAction.answers ? lastAction.answers.slice() : ['', '', '', '']; // Zajištění, že array nebude undefined
-        this.questions.pop(); // Smaž poslední přidanou otázku
+        this.newQuestion = lastAction.question || '';
+        this.newAnswers = lastAction.answers ? lastAction.answers.slice() : ['', '', '', ''];
+        this.questions.pop();
 
         // Uložení otázek do local storage
         this.saveQuestions();
       } else if (lastAction.action === 'toggle') {
         const index = this.questions.findIndex(q => q.text === lastAction.question);
         if (index !== -1) {
-          this.questions[index].showAnswers = false; // Zabalit otázku
+          this.questions[index].showAnswers = false;
         }
       }
     } else {
@@ -113,23 +109,20 @@ export class QuestionsPage implements OnInit {
   }
 
   toggleAnswers(index: number) {
-    this.questions[index].showAnswers = !this.questions[index].showAnswers; // Přepnutí zobrazení odpovědí
-    // Uložení akce do historie
+    this.questions[index].showAnswers = !this.questions[index].showAnswers;
     this.history.push({ action: 'toggle', question: this.questions[index].text });
   }
 
   removeQuestion() {
-    const selectedQuestionIndex = this.questions.findIndex(q => q.showAnswers); // Zjistit, která otázka je vybrána
+    const selectedQuestionIndex = this.questions.findIndex(q => q.showAnswers);
     if (selectedQuestionIndex !== -1) {
-      // Uložení akce do historie
       this.history.push({
         action: 'remove',
         question: this.questions[selectedQuestionIndex].text,
         answers: this.questions[selectedQuestionIndex].answers
       });
-      this.questions.splice(selectedQuestionIndex, 1); // Odstranění otázky
+      this.questions.splice(selectedQuestionIndex, 1);
 
-      // Uložení otázek do local storage
       this.saveQuestions();
     } else {
       alert('Please select a question to remove.');
@@ -137,21 +130,21 @@ export class QuestionsPage implements OnInit {
   }
 
   modifyQuestion() {
-    const selectedQuestionIndex = this.questions.findIndex(q => q.showAnswers); // Zjistit, která otázka je vybrána
+    const selectedQuestionIndex = this.questions.findIndex(q => q.showAnswers);
     if (selectedQuestionIndex !== -1) {
       const questionToModify = this.questions[selectedQuestionIndex];
-      this.newQuestion = questionToModify.text; // Naplnění vstupního pole otázky
-      this.newAnswers = questionToModify.answers.slice(); // Naplnění odpovědí
+      this.newQuestion = questionToModify.text;
+      this.newAnswers = questionToModify.answers.slice();
 
-      this.questions.splice(selectedQuestionIndex, 1); // Odstranění otázky z listu
-      // Uložení akce do historie
+      this.questions.splice(selectedQuestionIndex, 1);
+
       this.history.push({
         action: 'modify',
         question: questionToModify.text,
         answers: questionToModify.answers
       });
 
-      // Uložení otázek do local storage
+
       this.saveQuestions();
     } else {
       alert('Please select a question to modify.');
