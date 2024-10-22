@@ -1,0 +1,51 @@
+{
+  "mapID": 1,
+  "tileCount": 5,
+  "tiles": [
+    {
+      "tileId": 1,
+      "ownerId": 1001,
+      "typeId": 1,
+      "position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "tileId": 2,
+      "ownerId": 1002,
+      "typeId": 1,
+      "position": {
+        "x": 1,
+        "y": 0
+      }
+    },
+    {
+      "tileId": 3,
+      "ownerId": 1003,
+      "typeId": 1,
+      "position": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "tileId": 4,
+      "ownerId": 1004,
+      "typeId": 1,
+      "position": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    {
+      "tileId": 5,
+      "ownerId": 1005,
+      "typeId": 1,
+      "position": {
+        "x": 2,
+        "y": 1
+      }
+    }
+  ]
+}
