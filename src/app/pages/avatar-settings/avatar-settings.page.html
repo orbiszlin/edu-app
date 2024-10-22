@@ -15,9 +15,9 @@
   </ion-header>
 
   <div class="container">
-    <div>1</div>
-    <ion-input placeholder="Username" maxlength="20"></ion-input>
-    <ion-button>Save</ion-button>
+    <div>{{avatar_copy.body_id}}</div>
+    <ion-input type="text" placeholder="Username" clearOnEdit="true" maxlength="20" [formControl]="username"></ion-input>
+    <ion-button (click)="saveAvatar()">Save</ion-button>
   </div>
 
 </ion-content>
