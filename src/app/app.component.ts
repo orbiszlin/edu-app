@@ -21,6 +21,7 @@ export class AppComponent {
     { title: 'Archived', url: '/folder/archived', icon: 'archive' },
     { title: 'Trash', url: '/folder/trash', icon: 'trash' },
     { title: 'Avatar Settings', url: '/avatar-settings', icon: 'warning' },
+
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor() {
