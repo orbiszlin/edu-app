@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Manage Questions</ion-title>
+    <ion-title>Manage Questions</ion-title> <!-- Název stránky -->
   </ion-toolbar>
 </ion-header>
 
@@ -8,12 +8,14 @@
   <ion-grid class="ion-padding">
     <ion-row class="ion-justify-content-between">
       <ion-col size="auto">
-        <ion-button (click)="goBack()">Back</ion-button>
+        <ion-button (click)="goBack()">Back</ion-button> <!-- Tlačítko pro návrat -->
       </ion-col>
       <ion-col size="auto">
-        <ion-button (click)="openModal()">Add</ion-button>
+        <ion-button (click)="openModal()">Add</ion-button> <!-- Tlačítko pro přidání otázky -->
         <ion-button (click)="removeQuestion()" [disabled]="selectedQuestion === null">Remove</ion-button>
+        <!-- Tlačítko pro odebrání otázky -->
         <ion-button (click)="modifyQuestion()" [disabled]="selectedQuestion === null">Modify</ion-button>
+        <!-- Tlačítko pro úpravu otázky -->
       </ion-col>
     </ion-row>
 
@@ -21,12 +23,14 @@
       <ion-card-content>
         <ion-list>
           <ion-item *ngFor="let question of questions; let i = index" (click)="selectQuestion(i)">
-            <ion-label>{{ question.text }}</ion-label>
+            <ion-label>{{ question.question }}</ion-label> <!-- Zobrazit text otázky -->
             <ion-icon name="chevron-down" slot="end" *ngIf="!question.showAnswers"></ion-icon>
+            <!-- Ikona pro zobrazení odpovědí -->
             <ion-icon name="chevron-up" slot="end" *ngIf="question.showAnswers"></ion-icon>
+            <!-- Ikona pro skrytí odpovědí -->
             <ion-list *ngIf="question.showAnswers">
               <ion-item *ngFor="let answer of question.answers">
-                <ion-label>{{ answer }}</ion-label>
+                <ion-label>{{ answer }}</ion-label> <!-- Zobrazit odpovědi -->
               </ion-item>
             </ion-list>
           </ion-item>
@@ -41,22 +45,26 @@
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Cancel</ion-button>
+            <ion-button (click)="cancel()">Cancel</ion-button> <!-- Tlačítko pro zrušení -->
           </ion-buttons>
-          <ion-title>Question Creation</ion-title>
+          <ion-title>Question Creation</ion-title> <!-- Název modálního okna -->
           <ion-buttons slot="end">
-            <ion-button (click)="confirm()">Confirm</ion-button>
+            <ion-button (click)="confirm()">Confirm</ion-button> <!-- Tlačítko pro potvrzení -->
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <form [formGroup]="questionForm">
+        <form [formGroup]="questionForm"> <!-- Reaktivní formulář -->
           <ion-item>
-            <ion-input placeholder="Enter question" formControlName="question"></ion-input>
+            <ion-input placeholder="Enter question" formControlName="question"></ion-input> <!-- Vstup pro otázku -->
           </ion-item>
-          <ion-item *ngFor="let answer of answersControls; let j = index">
-            <ion-input placeholder="Enter answer {{ j + 1 }}"></ion-input>
-          </ion-item>
+          <ng-container formArrayName="answers"> <!-- Kontejner pro odpovědi -->
+            <ion-item *ngFor="let answer of answersControls; let i = index"> <!-- Dynamické pole pro odpovědi -->
+              <ion-input placeholder="Enter answer {{ i + 1 }}" [formControl]="answer"></ion-input>
+              <!-- Vstup pro odpověď -->
+              <!-- Přiřazení vstupu odpovědi k ovládacímu prvku -->
+            </ion-item>
+          </ng-container>
         </form>
       </ion-content>
     </ng-template>

@@ -1,7 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { OverlayEventDetail } from '@ionic/core/components';
+import {Component, ViewChild, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl} from '@angular/forms';
 import {
   IonButton,
   IonItem,
@@ -50,113 +49,126 @@ import {
   ],
 })
 export class QuestionsPage implements OnInit {
-  @ViewChild(IonModal) modal!: IonModal; // Odkaz na modální okno
+  @ViewChild(IonModal) modal!: IonModal; // Reference na modální okno
 
-  questionForm!: FormGroup; // Reaktivní formulář
-  questions: { text: string; answers: string[]; showAnswers: boolean }[] = []; // Seznam otázek
-  selectedQuestion: number | null = null; // Vybraná otázka
-  isEditing: boolean = false; // Flag pro editaci
+  questionForm!: FormGroup; // Reaktivní formulář pro otázky a odpovědi
+  questions: { question: string; answers: string[]; showAnswers: boolean }[] = []; // Pole pro otázky
+  selectedQuestion: number | null = null; // Index aktuálně vybrané otázky
+  isEditing: boolean = false; // Příznak pro kontrolu, zda je formulář v režimu úpravy
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit() {
-    // Načíst otázky při inicializaci
+    // Načtení otázek a inicializace formuláře při inicializaci komponenty
     this.loadQuestions();
-    // Inicializace formuláře
     this.initializeForm();
   }
 
   loadQuestions() {
-    // Načíst otázky ze statického pole
+    // Načtení otázek z statického pole (momentálně prázdné, může být změněno na načtení ze služby)
     this.questions = [];
   }
 
   initializeForm() {
-    this.questionForm = this.fb.group({
-      question: [''], // Pole pro otázku
-      answers: this.fb.array([this.fb.control(''), this.fb.control(''), this.fb.control(''), this.fb.control('')]), // Pole pro odpovědi
+    // Inicializace reaktivního formuláře s poli pro otázku a odpovědi
+    this.questionForm = new FormGroup({
+      question: new FormControl(""), // Ovládací prvek pro text otázky
+      answers: new FormArray([ // Pole ovládacích prvků pro odpovědi
+        new FormControl(""),
+        new FormControl(""),
+        new FormControl(""),
+        new FormControl("")
+      ]),
     });
   }
 
   get answersControls() {
-    return (this.questionForm.get('answers') as FormArray).controls; // Přístup k ovládacím prvkům odpovědí
+    // Získání ovládacích prvků pro odpovědi pro dynamické vytvoření polí
+    return (this.questionForm.get('answers') as FormArray).controls as FormControl[];
   }
 
   goBack() {
-    // Zatím nic neděláme, můžeš přidat logiku později
+    // Implementace logiky pro návrat na předchozí stránku (pokud je potřeba)
   }
 
   selectQuestion(index: number) {
-    // Vyber otázku a přepni viditelnost odpovědí
+    // Vybrání otázky a přepnutí viditelnosti odpovědí
     this.selectedQuestion = index;
     this.questions[index].showAnswers = !this.questions[index].showAnswers;
   }
 
   openModal() {
     this.resetForm(); // Resetovat formulář před otevřením
-    this.modal.present(); // Otevřít modální okno
+    this.modal.present(); // Otevřít modální okno pro přidání nebo úpravu otázky
   }
 
   removeQuestion() {
+    // Odebrat vybranou otázku ze seznamu, pokud je nějaká vybraná
     if (this.selectedQuestion !== null) {
-      this.questions.splice(this.selectedQuestion, 1); // Odebrat vybranou otázku
+      this.questions.splice(this.selectedQuestion, 1); // Odebrat otázku
       this.selectedQuestion = null; // Resetovat vybranou otázku
     }
   }
 
   modifyQuestion() {
+    // Načíst data vybrané otázky do formuláře pro úpravu
     if (this.selectedQuestion !== null) {
       const questionToEdit = this.questions[this.selectedQuestion];
       this.questionForm.patchValue({
-        question: questionToEdit.text, // Předvyplnit otázku
-        answers: questionToEdit.answers // Předvyplnit odpovědi
+        question: questionToEdit.question, // Předvyplnit pole otázky
+        answers: questionToEdit.answers // Předvyplnit pole odpovědí
       });
-      this.isEditing = true; // Přepnout na režim úpravy
-      this.modal.present(); // Otevřít modální okno
+      this.isEditing = true; // Nastavit příznak úpravy na true
+      this.modal.present(); // Otevřít modální okno pro úpravu
     }
   }
 
   cancel() {
-    this.modal.dismiss(null, 'cancel'); // Zavřít modální okno bez uložení
-    this.resetForm(); // Resetovat formulář
+    // Zavřít modální okno a resetovat formulář bez uložení změn
+    this.modal.dismiss(null, 'cancel');
+    this.resetForm();
   }
 
   confirm() {
-    const { question, answers }: { question: string; answers: string[] } = this.questionForm.value; // Explicitní typy
+    // Zpracovat odeslání formuláře pro přidání nebo aktualizaci otázky
+    const {question, answers}: { question: string; answers: string[] } = this.questionForm.value;
 
-    // Kontrola, zda je otázka nebo alespoň jedna odpověď vyplněná
-    if (question.trim() || answers.some((answer: string) => answer.trim())) { // Přidání typu pro answer
+    // Zkontrolovat, zda je otázka nebo alespoň jedna odpověď vyplněná
+    if (question.trim() || answers.some((answer: string) => answer.trim())) {
       if (this.isEditing) {
-        // Aktualizace existující otázky
+        // Pokud je v režimu úpravy, aktualizovat existující otázku
         const questionToEdit = this.questions[this.selectedQuestion!];
-        questionToEdit.text = question; // Aktualizovat text otázky
-        questionToEdit.answers = answers; // Aktualizovat odpovědi
+        questionToEdit.question = question; // Aktualizovat text otázky
+        questionToEdit.answers = answers; // Aktualizovat pole odpovědí
       } else {
-        // Přidání nové otázky
+        // Pokud se přidává nová otázka, přidat ji do pole otázek
         this.questions.push({
-          text: question,
+          question: question,
           answers: answers,
-          showAnswers: false,
+          showAnswers: false, // Výchozí viditelnost nastavena na false
         });
       }
 
-      this.resetForm(); // Resetovat formulář
+      this.resetForm(); // Resetovat formulář po odeslání
       this.modal.dismiss(null, 'confirm'); // Zavřít modální okno
     } else {
-      alert('Please fill in at least the question or one answer'); // Kontrola, zda jsou pole vyplněna
+      alert('Please fill in at least the question or one answer'); // Upozornění v případě selhání validace
     }
   }
 
   onWillDismiss(event: Event) {
+    // Zpracování události při zavření modálního okna
     const ev = event as CustomEvent;
     if (ev.detail.role === 'confirm') {
-      console.log('Confirmed');
+      console.log('Confirmed'); // Zpráva do konzole při potvrzení
     }
   }
 
   resetForm() {
+    // Resetovat formulář a příznaky
     this.questionForm.reset(); // Resetovat formulář
-    this.isEditing = false; // Nastavit režim úpravy na false
+    this.isEditing = false; // Nastavit příznak úpravy na false
     this.selectedQuestion = null; // Resetovat vybranou otázku
   }
 }
