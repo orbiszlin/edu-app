@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>avatar_settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">avatar_settings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="container">
+    <div>{{avatar_copy.body_id}}</div>
+    <ion-input type="text" placeholder="Username" clearOnEdit="true" maxlength="20" [formControl]="username"></ion-input>
+    <ion-button (click)="saveAvatar()">Save</ion-button>
+  </div>
+
+</ion-content>
