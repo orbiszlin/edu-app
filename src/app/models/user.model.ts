@@ -1,12 +1,13 @@
 export interface User {
   id: number;
+  username: string;
   email: string;
   password: string;
   avatar: Avatar;
 }
 
 export interface Avatar {
-  body_id: number;
-  hat_id: number;
+  bodyId: number;
+  hatId: number;
   name: string;
 }

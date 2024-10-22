@@ -22,24 +22,24 @@ import {
 })
 export class AvatarSettingsPage implements OnInit {
 
-  avatar_copy: Avatar;
+  avatarCopy: Avatar;
 
   username = new FormControl<string>("", [Validators.required]);
 
   constructor() {
-    this.avatar_copy = {
-      body_id: 0,
-      hat_id: 0,
+    this.avatarCopy = {
+      bodyId: 0,
+      hatId: 0,
       name: "ahoj",
     }
 
-    this.username.setValue(this.avatar_copy.name, {
+    this.username.setValue(this.avatarCopy.name, {
       emitEvent: false
     });
 
     this.username.valueChanges.subscribe(data => {
       if (data != null) {
-        this.avatar_copy.name = data;
+        this.avatarCopy.name = data;
       }
     })
   }
