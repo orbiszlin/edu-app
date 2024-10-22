@@ -1,0 +1,17 @@
+.col-center {
+  display: flex;
+  flex-direction: column; /* Arrange buttons in a column */
+  align-items: center; /* Center buttons horizontally */
+  justify-content: center; /* Center buttons vertically */
+  gap: 10px; /* Space between buttons */
+}
+
+.button {
+  width: 35%;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
