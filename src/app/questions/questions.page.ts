@@ -1,8 +1,26 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
-import { IonButton, IonItem, IonInput, IonLabel, IonList, IonContent, IonHeader, IonToolbar, IonTitle, IonRow, IonCol, IonIcon, IonCard, IonCardContent, IonGrid, IonModal, IonButtons } from '@ionic/angular/standalone';
-import { Preferences } from '@capacitor/preferences'; // Import pro Preferences
+import {Component, ViewChild, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl} from '@angular/forms';
+import {
+  IonButton,
+  IonItem,
+  IonInput,
+  IonLabel,
+  IonList,
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonRow,
+  IonCol,
+  IonIcon,
+  IonCard,
+  IonCardContent,
+  IonGrid,
+  IonModal,
+  IonButtons
+} from '@ionic/angular/standalone';
+import {Preferences} from '@capacitor/preferences'; // Import pro Preferences
 
 @Component({
   selector: 'app-questions',
@@ -40,7 +58,8 @@ export class QuestionsPage implements OnInit {
   isEditing: boolean = false; // Editing flag
   private router: any;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit() {
     this.loadQuestions(); // Načtení otázek při inicializaci
@@ -88,6 +107,8 @@ export class QuestionsPage implements OnInit {
     if (this.selectedQuestion !== null) {
       this.questions.splice(this.selectedQuestion, 1); // Odstranit vybranou otázku
       this.selectedQuestion = null; // Reset vybrané otázky
+
+      this.saveState(); // Uložit stav po odstranění otázky
     }
   }
 
@@ -109,7 +130,7 @@ export class QuestionsPage implements OnInit {
   }
 
   confirm() {
-    const { question, answers }: { question: string; answers: string[] } = this.questionForm.value; // Explicitní typy
+    const {question, answers}: { question: string; answers: string[] } = this.questionForm.value; // Explicitní typy
 
     // Kontrola, zda je otázka nebo alespoň jedna odpověď vyplněná
     if (question.trim() || answers.some((answer: string) => answer.trim())) {
@@ -162,7 +183,7 @@ export class QuestionsPage implements OnInit {
 
   // Načte uložený stav z preferencí
   private async loadState() {
-    const { value } = await Preferences.get({ key: 'questionState' }); // Načtení stavu
+    const {value} = await Preferences.get({key: 'questionState'}); // Načtení stavu
 
     if (value) {
       const state = JSON.parse(value); // Převod z JSON zpět na objekt
