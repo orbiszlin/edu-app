@@ -3,10 +3,14 @@ ion-menu-button {
 }
 
 ion-input {
-  border: 3px solid var(--ion-color-primary);
+  --highlight-color-focused: 0;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  border: 2px solid var(--ion-color-primary);
   border-radius: 10px;
   max-width: 370px ;
   max-height: 90px ;
+  padding: 20px;
 }
 
 .container {
