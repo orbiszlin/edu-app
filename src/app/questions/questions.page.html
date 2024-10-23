@@ -62,9 +62,17 @@
             <ion-item *ngFor="let answer of answersControls; let i = index"> <!-- Dynamické pole pro odpovědi -->
               <ion-input placeholder="Enter answer {{ i + 1 }}" [formControl]="answer"></ion-input>
               <!-- Vstup pro odpověď -->
-              <!-- Přiřazení vstupu odpovědi k ovládacímu prvku -->
+              <ion-button *ngIf="answersControls.length > 1" fill="clear" (click)="removeAnswer(i)">
+                <ion-icon name="remove-circle-outline"></ion-icon> <!-- Tlačítko pro odebrání odpovědi -->
+              </ion-button>
             </ion-item>
           </ng-container>
+          <ion-item lines="none">
+            <ion-button (click)="addAnswer()" fill="clear">
+              <ion-icon name="add-circle-outline"></ion-icon>
+              Add Answer
+            </ion-button>
+          </ion-item>
         </form>
       </ion-content>
     </ng-template>

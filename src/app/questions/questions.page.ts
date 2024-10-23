@@ -50,12 +50,12 @@ import {Preferences} from '@capacitor/preferences'; // Import pro Preferences
   ],
 })
 export class QuestionsPage implements OnInit {
-  @ViewChild(IonModal) modal!: IonModal; // Reference to the modal
+  @ViewChild(IonModal) modal!: IonModal; // Reference na modalní okno
 
-  questionForm!: FormGroup; // Reactive form
-  questions: { question: string; answers: string[]; showAnswers: boolean }[] = []; // Questions list
-  selectedQuestion: number | null = null; // Selected question
-  isEditing: boolean = false; // Editing flag
+  questionForm!: FormGroup; // Reaktivní formulář
+  questions: { question: string; answers: string[]; showAnswers: boolean }[] = []; // Seznam otázek
+  selectedQuestion: number | null = null; // Vybraná otázka
+  isEditing: boolean = false; // Příznak pro úpravu otázky
   private router: any;
 
   constructor(private fb: FormBuilder) {
@@ -68,28 +68,38 @@ export class QuestionsPage implements OnInit {
   }
 
   loadQuestions() {
-    // Load questions from a static array
     this.questions = [];
   }
 
+  // Inicializace formuláře
   initializeForm() {
-    this.questionForm = new FormGroup({ // Inicializace formuláře
+    this.questionForm = new FormGroup({
       question: new FormControl(""),
-      answers: new FormArray([ // Pole pro odpovědi
-        new FormControl(""),
-        new FormControl(""),
-        new FormControl(""),
-        new FormControl("")
-      ]),
+      answers: new FormArray([new FormControl("")]), // Začínáme s jednou odpovědí
     });
   }
 
+  // Přístup k dynamickým kontrolám pro odpovědi
   get answersControls() {
-    return (this.questionForm.get('answers') as FormArray).controls as FormControl[]; // Přístup k ovládacím prvkům odpovědí
+    return (this.questionForm.get('answers') as FormArray).controls as FormControl[];
+  }
+
+  // Přidá novou odpověď do formuláře
+  addAnswer() {
+    const answersArray = this.questionForm.get('answers') as FormArray;
+    answersArray.push(new FormControl("")); // Přidá nový kontrolní prvek pro odpověď
+  }
+
+  // Odebere odpověď na základě indexu
+  removeAnswer(index: number) {
+    const answersArray = this.questionForm.get('answers') as FormArray;
+    if (answersArray.length > 1) { // Umožňuje odebrat odpověď jen pokud je více než jedna
+      answersArray.removeAt(index);
+    }
   }
 
   goBack() {
-    // Navigace na předchozí stránku
+    // Navigace zpět
     this.router.navigate(['../']);
   }
 
@@ -99,13 +109,13 @@ export class QuestionsPage implements OnInit {
   }
 
   openModal() {
-    this.resetForm(); // Reset form before opening
-    this.modal.present(); // Open modal
+    this.resetForm(); // Resetování formuláře před otevřením modálního okna
+    this.modal.present(); // Otevření modálního okna
   }
 
   removeQuestion() {
     if (this.selectedQuestion !== null) {
-      this.questions.splice(this.selectedQuestion, 1); // Odstranit vybranou otázku
+      this.questions.splice(this.selectedQuestion, 1); // Odstranění vybrané otázky
       this.selectedQuestion = null; // Reset vybrané otázky
 
       this.saveState(); // Uložit stav po odstranění otázky
@@ -115,79 +125,69 @@ export class QuestionsPage implements OnInit {
   modifyQuestion() {
     if (this.selectedQuestion !== null) {
       const questionToEdit = this.questions[this.selectedQuestion];
-      this.questionForm.patchValue({ // Předvyplnění otázky a odpovědí
-        question: questionToEdit.question,
-        answers: questionToEdit.answers
+
+      // Nastavení otázky
+      this.questionForm.patchValue({
+        question: questionToEdit.question
       });
-      this.isEditing = true; // Přepnout do režimu úpravy
+
+      // Vyčištění existujících odpovědí ve FormArray a nastavení nových
+      const answersArray = this.questionForm.get('answers') as FormArray;
+      answersArray.clear(); // Vyčistíme pole odpovědí
+
+      // Dynamicky přidáme všechny odpovědi z vybrané otázky
+      questionToEdit.answers.forEach((answer: string) => {
+        answersArray.push(new FormControl(answer));
+      });
+
+      this.isEditing = true;
       this.modal.present(); // Otevřít modální okno
     }
   }
 
   cancel() {
-    this.modal.dismiss(null, 'cancel'); // Zavřít modální okno bez uložení
-    this.resetForm(); // Resetovat formulář
+    this.modal.dismiss(null, 'cancel'); // Zavření modálního okna
+    this.resetForm(); // Resetování formuláře
   }
 
   confirm() {
-    const {question, answers}: { question: string; answers: string[] } = this.questionForm.value; // Explicitní typy
+    const {question, answers}: { question: string; answers: string[] } = this.questionForm.value;
 
-    // Kontrola, zda je otázka nebo alespoň jedna odpověď vyplněná
-    if (question.trim() || answers.some((answer: string) => answer.trim())) {
-      if (this.isEditing) {
-        // Aktualizace existující otázky
-        const questionToEdit = this.questions[this.selectedQuestion!];
-        questionToEdit.question = question; // Aktualizovat text otázky
-        questionToEdit.answers = answers; // Aktualizovat odpovědi
-      } else {
-        // Přidání nové otázky
-        this.questions.push({
-          question: question,
-          answers: answers,
-          showAnswers: false,
-        });
-      }
-
-      this.saveState(); // Uložit stav po potvrzení
-      this.resetForm(); // Resetovat formulář
-      this.modal.dismiss(null, 'confirm'); // Zavřít modální okno
+    if (this.isEditing && this.selectedQuestion !== null) {
+      // Aktualizace existující otázky
+      this.questions[this.selectedQuestion] = {question, answers, showAnswers: false};
+      this.isEditing = false;
     } else {
-      alert('Please fill in at least the question or one answer'); // Kontrola, zda jsou pole vyplněna
+      // Přidání nové otázky
+      this.questions.push({question, answers, showAnswers: false});
     }
+
+    this.saveState(); // Uložit stav po přidání/aktualizaci otázky
+    this.modal.dismiss(null, 'confirm'); // Zavření modálního okna
+    this.resetForm(); // Resetování formuláře
   }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent;
     if (ev.detail.role === 'confirm') {
-      console.log('Confirmed');
+      this.resetForm(); // Resetování formuláře po potvrzení
     }
   }
 
   resetForm() {
-    this.questionForm.reset(); // Resetovat formulář
-    this.isEditing = false; // Nastavit režim úpravy na false
-    this.selectedQuestion = null; // Resetovat vybranou otázku
+    this.questionForm.reset(); // Reset formuláře
+    (this.questionForm.get('answers') as FormArray).clear(); // Vymazat odpovědi
+    (this.questionForm.get('answers') as FormArray).push(new FormControl('')); // Přidat prázdnou odpověď
   }
 
-  // Uloží aktuální otázky a odpovědi do preferencí
-  private async saveState() {
-    const state = {
-      questions: this.questions, // Uložení aktuálních otázek
-    };
-
-    await Preferences.set({
-      key: 'questionState',
-      value: JSON.stringify(state), // Uložení stavu jako JSON
-    });
+  saveState() {
+    Preferences.set({key: 'questions', value: JSON.stringify(this.questions)}); // Uložení otázek
   }
 
-  // Načte uložený stav z preferencí
-  private async loadState() {
-    const {value} = await Preferences.get({key: 'questionState'}); // Načtení stavu
-
+  async loadState() {
+    const {value} = await Preferences.get({key: 'questions'});
     if (value) {
-      const state = JSON.parse(value); // Převod z JSON zpět na objekt
-      this.questions = state.questions; // Nastavení otázek z uloženého stavu
+      this.questions = JSON.parse(value); // Načtení otázek
     }
   }
 }
