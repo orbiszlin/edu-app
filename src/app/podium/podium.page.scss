@@ -1,0 +1,82 @@
+.statistics-button {
+  height: 60px;
+  font-size: 1.5em;
+  --background: #6699cc;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  gap: 64px;
+}
+.podium {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: 50px;
+}
+.podium-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+.podium-block {
+  background-color: #d97ea1;
+  width: 100px;
+  border-radius: 5px 5px 0 0;
+}
+.podium-item.first .podium-block {
+  height: 250px;
+}
+.podium-item.second .podium-block {
+  height: 180px;
+}
+.podium-item.third .podium-block {
+  height: 150px;
+}
+.medal {
+  background-color: #e0e0e0;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 1.2em;
+}
+.gold {
+  background-color: gold;
+}
+.silver {
+  background-color: silver;
+}
+.bronze {
+  background-color: #cd7f32;
+}
+.buttons-horizontal {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+ion-button {
+  width: auto;
+  margin: 0 5px;
+  background-color: #6699cc;
+}
+ion-button:hover {
+  background-color: #5588bb;
+}
+@media (max-width: 600px) {
+  .statistics-button {
+    font-size: 1.2em;
+    height: 50px;
+  }
+  .buttons-horizontal {
+    flex-direction: column;
+    align-items: center;
+  }
+  .podium {
+    flex-direction: column;
+  }
+}
