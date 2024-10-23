@@ -1,6 +1,6 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl} from '@angular/forms';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {ReactiveFormsModule, FormGroup, FormArray, FormControl, FormBuilder} from '@angular/forms';
 import {
   IonButton,
   IonItem,
@@ -20,8 +20,11 @@ import {
   IonModal,
   IonButtons
 } from '@ionic/angular/standalone';
-import {Preferences} from '@capacitor/preferences'; // Import pro Preferences
+import { Preferences } from '@capacitor/preferences'; // Import for Preferences
 
+/**
+ * Component for managing questions and answers.
+ */
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.page.html',
@@ -50,144 +53,188 @@ import {Preferences} from '@capacitor/preferences'; // Import pro Preferences
   ],
 })
 export class QuestionsPage implements OnInit {
-  @ViewChild(IonModal) modal!: IonModal; // Reference na modalní okno
+  @ViewChild(IonModal) modal!: IonModal; // Reference to the modal window
 
-  questionForm!: FormGroup; // Reaktivní formulář
-  questions: { question: string; answers: string[]; showAnswers: boolean }[] = []; // Seznam otázek
-  selectedQuestion: number | null = null; // Vybraná otázka
-  isEditing: boolean = false; // Příznak pro úpravu otázky
-  private router: any;
+  /** Reactive form for questions and answers */
+  questionForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-  }
+  /** List of questions in the application */
+  questions: { question: string; answers: string[]; showAnswers: boolean }[] = [];
 
+  /** Index of the currently selected question */
+  selectedQuestion: number | null = null;
+
+  /** Flag indicating whether an existing question is being edited */
+  isEditing: boolean = false;
+
+  /**
+   * Constructor for the component.
+   * @param fb - Instance of FormBuilder for managing forms
+   */
+  constructor(private fb: FormBuilder) {}
+
+  /**
+   * Initializes the component and loads the saved state.
+   */
   ngOnInit() {
-    this.loadQuestions(); // Načtení otázek při inicializaci
-    this.initializeForm(); // Inicializace formuláře
-    this.loadState(); // Načtení uloženého stavu
+    this.initializeForm(); // Initialize the form
+    this.loadState(); // Load the saved state
   }
 
-  loadQuestions() {
-    this.questions = [];
-  }
-
-  // Inicializace formuláře
+  /**
+   * Initializes the form with one empty answer.
+   */
   initializeForm() {
     this.questionForm = new FormGroup({
-      question: new FormControl(""),
-      answers: new FormArray([new FormControl("")]), // Začínáme s jednou odpovědí
+      question: new FormControl(""), // Empty question field
+      answers: new FormArray([new FormControl("")]), // Start with one answer
     });
   }
 
-  // Přístup k dynamickým kontrolám pro odpovědi
+  /**
+   * Accesses the dynamic controls for answers.
+   * @returns Answer controls as FormControl[]
+   */
   get answersControls() {
     return (this.questionForm.get('answers') as FormArray).controls as FormControl[];
   }
 
-  // Přidá novou odpověď do formuláře
+  /**
+   * Adds a new answer to the form.
+   */
   addAnswer() {
     const answersArray = this.questionForm.get('answers') as FormArray;
-    answersArray.push(new FormControl("")); // Přidá nový kontrolní prvek pro odpověď
+    answersArray.push(new FormControl("")); // Add a new control for an answer
   }
 
-  // Odebere odpověď na základě indexu
+  /**
+   * Removes an answer based on the index.
+   * @param index - Index of the answer to be removed.
+   */
   removeAnswer(index: number) {
     const answersArray = this.questionForm.get('answers') as FormArray;
-    if (answersArray.length > 1) { // Umožňuje odebrat odpověď jen pokud je více než jedna
+    if (answersArray.length > 1) { // Allows removal only if there is more than one answer
       answersArray.removeAt(index);
     }
   }
 
-  goBack() {
-    // Navigace zpět
-    this.router.navigate(['../']);
-  }
-
+  /**
+   * Selects a question to edit and toggles the visibility of its answers.
+   * @param index - Index of the selected question.
+   */
   selectQuestion(index: number) {
-    this.selectedQuestion = index; // Nastavení vybrané otázky
-    this.questions[index].showAnswers = !this.questions[index].showAnswers; // Přepnutí viditelnosti odpovědí
+    this.selectedQuestion = index; // Set the selected question
+    this.questions[index].showAnswers = !this.questions[index].showAnswers; // Toggle visibility of answers
   }
 
+  /**
+   * Opens the modal window for adding or editing a question.
+   */
   openModal() {
-    this.resetForm(); // Resetování formuláře před otevřením modálního okna
-    this.modal.present(); // Otevření modálního okna
+    this.resetForm(); // Reset the form before opening the modal
+    this.modal.present(); // Open the modal window
   }
 
+  /**
+   * Removes the selected question from the list.
+   */
   removeQuestion() {
     if (this.selectedQuestion !== null) {
-      this.questions.splice(this.selectedQuestion, 1); // Odstranění vybrané otázky
-      this.selectedQuestion = null; // Reset vybrané otázky
-
-      this.saveState(); // Uložit stav po odstranění otázky
+      this.questions.splice(this.selectedQuestion, 1); // Remove the selected question
+      this.selectedQuestion = null; // Reset the selected question
+      this.saveState(); // Save the state after removing the question
     }
   }
 
+  /**
+   * Modifies an existing question by pre-filling the form with its details.
+   */
   modifyQuestion() {
     if (this.selectedQuestion !== null) {
       const questionToEdit = this.questions[this.selectedQuestion];
 
-      // Nastavení otázky
+      // Set the question in the form
       this.questionForm.patchValue({
         question: questionToEdit.question
       });
 
-      // Vyčištění existujících odpovědí ve FormArray a nastavení nových
+      // Clear existing answers in the FormArray and set new ones
       const answersArray = this.questionForm.get('answers') as FormArray;
-      answersArray.clear(); // Vyčistíme pole odpovědí
+      answersArray.clear(); // Clear the answers array
 
-      // Dynamicky přidáme všechny odpovědi z vybrané otázky
+      // Dynamically add all answers from the selected question
       questionToEdit.answers.forEach((answer: string) => {
         answersArray.push(new FormControl(answer));
       });
 
-      this.isEditing = true;
-      this.modal.present(); // Otevřít modální okno
+      this.isEditing = true; // Set editing flag to true
+      this.modal.present(); // Open the modal window
     }
   }
 
+  /**
+   * Cancels the modal operation and resets the form.
+   */
   cancel() {
-    this.modal.dismiss(null, 'cancel'); // Zavření modálního okna
-    this.resetForm(); // Resetování formuláře
+    this.modal.dismiss(null, 'cancel'); // Close the modal window
+    this.resetForm(); // Reset the form
   }
 
+  /**
+   * Confirms the action and either adds a new question or updates an existing one.
+   */
   confirm() {
-    const {question, answers}: { question: string; answers: string[] } = this.questionForm.value;
+    const { question, answers }: { question: string; answers: string[] } = this.questionForm.value;
 
     if (this.isEditing && this.selectedQuestion !== null) {
-      // Aktualizace existující otázky
-      this.questions[this.selectedQuestion] = {question, answers, showAnswers: false};
+      // Update the existing question
+      this.questions[this.selectedQuestion] = { question, answers, showAnswers: false };
       this.isEditing = false;
     } else {
-      // Přidání nové otázky
-      this.questions.push({question, answers, showAnswers: false});
+      // Add a new question
+      this.questions.push({ question, answers, showAnswers: false });
     }
 
-    this.saveState(); // Uložit stav po přidání/aktualizaci otázky
-    this.modal.dismiss(null, 'confirm'); // Zavření modálního okna
-    this.resetForm(); // Resetování formuláře
+    this.saveState(); // Save the state after adding/updating a question
+    this.modal.dismiss(null, 'confirm'); // Close the modal window
+    this.resetForm(); // Reset the form
   }
 
+  /**
+   * Handles the event when the modal is about to dismiss.
+   * @param event - The dismiss event.
+   */
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent;
     if (ev.detail.role === 'confirm') {
-      this.resetForm(); // Resetování formuláře po potvrzení
+      this.resetForm(); // Reset the form after confirmation
     }
   }
 
+  /**
+   * Resets the form to its initial state, clearing all inputs.
+   */
   resetForm() {
-    this.questionForm.reset(); // Reset formuláře
-    (this.questionForm.get('answers') as FormArray).clear(); // Vymazat odpovědi
-    (this.questionForm.get('answers') as FormArray).push(new FormControl('')); // Přidat prázdnou odpověď
+    this.questionForm.reset(); // Reset the form
+    const answersArray = this.questionForm.get('answers') as FormArray;
+    answersArray.clear(); // Clear answers
+    answersArray.push(new FormControl('')); // Add an empty answer
   }
 
+  /**
+   * Saves the current state of the questions to preferences.
+   */
   saveState() {
-    Preferences.set({key: 'questions', value: JSON.stringify(this.questions)}); // Uložení otázek
+    Preferences.set({ key: 'questions', value: JSON.stringify(this.questions) }); // Save questions
   }
 
+  /**
+   * Loads the saved state of the questions from preferences.
+   */
   async loadState() {
-    const {value} = await Preferences.get({key: 'questions'});
+    const { value } = await Preferences.get({ key: 'questions' });
     if (value) {
-      this.questions = JSON.parse(value); // Načtení otázek
+      this.questions = JSON.parse(value); // Load questions
     }
   }
 }

@@ -6,5 +6,8 @@ ion-item {
   --min-height: 60px; /* Zajištění minimální výšky položek */
 }
 
-
+.center-title {
+  text-align: center;
+  width: 100%; /* Zajistí, že ion-title zabere celou šířku toolbaru */
+}
 
