@@ -9,5 +9,5 @@ export interface User {
 export interface Avatar {
   bodyId: number;
   hatId: number;
-  name: string;
+  alias: string;
 }
