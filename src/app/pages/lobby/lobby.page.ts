@@ -29,4 +29,15 @@ export class LobbyPage implements OnInit {
       }
     });
   }
+
+  onStartGame() {
+    //this.gameService.getNewMap();
+    this.router.navigate(['/game']).then(success => {
+      if (success) {
+        console.log('Navigation to /game was successful!');
+      } else {
+        console.log('Navigation to /game failed!');
+      }
+    })
+  }
 }

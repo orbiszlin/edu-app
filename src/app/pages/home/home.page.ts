@@ -18,7 +18,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
-  onStartGame() {
+  onStartLobby() {
     this.gameService.startGame(); // Set gameIsOn to true
     this.router.navigate(['/lobby']).then(success => {
       if (success) {
