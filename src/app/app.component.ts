@@ -53,7 +53,6 @@ export class AppComponent {
     {title: 'Avatar Settings', url: '/avatar-settings', icon: 'warning'},
     {title: 'Login', url: '/login-screen', icon: 'warning'},
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor() {
     addIcons({
