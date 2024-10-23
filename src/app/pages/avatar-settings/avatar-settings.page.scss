@@ -1,0 +1,23 @@
+ion-menu-button {
+  color: var(--ion-color-primary);
+}
+
+ion-input {
+  --highlight-color-focused: 0;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 10px;
+  max-width: 370px ;
+  max-height: 90px ;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  gap: 4rem;
+}
