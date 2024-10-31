@@ -1,0 +1,20 @@
+ion-menu-button {
+  color: var(--ion-color-primary);
+}
+
+.textField {
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 10px;
+  max-width: 370px ;
+  max-height: 90px ;
+  padding: 4px 16px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  gap: 4rem;
+}
