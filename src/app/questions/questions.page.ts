@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ReactiveFormsModule, FormGroup, FormArray, FormControl, FormBuilder} from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
 import {
   IonButton,
   IonItem,
@@ -100,11 +100,20 @@ export class QuestionsPage implements OnInit {
   }
 
   /**
-   * Adds a new answer to the form.
+   * Adds a new answer to the form and sets up a subscription to remove empty answers.
    */
   addAnswer() {
     const answersArray = this.questionForm.get('answers') as FormArray;
     answersArray.push(new FormControl("")); // Add a new control for an answer
+
+    // Subscribe to value changes and remove the answer if it's empty
+    const controlIndex = answersArray.length - 1;
+    const newControl = answersArray.at(controlIndex) as FormControl;
+    newControl.valueChanges.subscribe(value => {
+      if (value.trim() === '') { // Check if the answer is empty
+        answersArray.removeAt(controlIndex); // Remove the empty answer
+      }
+    });
   }
 
   /**
@@ -167,7 +176,7 @@ export class QuestionsPage implements OnInit {
         answersArray.push(new FormControl(answer));
       });
 
-      this.isEditing = true; // Set editing flag to true
+      this.isEditing = true; // Set editing mode
       this.modal.present(); // Open the modal window
     }
   }
@@ -176,65 +185,83 @@ export class QuestionsPage implements OnInit {
    * Cancels the modal operation and resets the form.
    */
   cancel() {
-    this.modal.dismiss(null, 'cancel'); // Close the modal window
+    this.modal.dismiss(null, 'cancel'); // Close the modal
     this.resetForm(); // Reset the form
   }
 
   /**
-   * Confirms the action and either adds a new question or updates an existing one.
+   * Confirms the addition or modification of a question and saves it.
    */
   confirm() {
     const { question, answers }: { question: string; answers: string[] } = this.questionForm.value;
 
-    if (this.isEditing && this.selectedQuestion !== null) {
-      // Update the existing question
-      this.questions[this.selectedQuestion] = { question, answers, showAnswers: false };
-      this.isEditing = false;
-    } else {
-      // Add a new question
-      this.questions.push({ question, answers, showAnswers: false });
+    // Filter out any empty answers
+    const filteredAnswers = answers.filter(answer => answer.trim() !== '');
+
+    if (filteredAnswers.length === 0) {
+      return; // Do not save if there are no valid answers
     }
 
-    this.saveState(); // Save the state after adding/updating a question
-    this.modal.dismiss(null, 'confirm'); // Close the modal window
-    this.resetForm(); // Reset the form
+    if (this.isEditing && this.selectedQuestion !== null) {
+      // Update the existing question
+      this.questions[this.selectedQuestion] = {
+        question,
+        answers: filteredAnswers,
+        showAnswers: false,
+      };
+      this.isEditing = false; // Reset editing mode
+    } else {
+      // Add a new question
+      this.questions.push({
+        question,
+        answers: filteredAnswers,
+        showAnswers: false,
+      });
+    }
+
+    this.saveState(); // Save the updated state
+    this.modal.dismiss(null, 'confirm'); // Close the modal
+    this.resetForm(); // Reset the form after saving
   }
 
   /**
-   * Handles the event when the modal is about to dismiss.
-   * @param event - The dismiss event.
+   * Handles the event when the modal is about to be dismissed.
+   * @param event - Dismiss event
    */
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent;
     if (ev.detail.role === 'confirm') {
-      this.resetForm(); // Reset the form after confirmation
+      this.resetForm(); // Reset the form when confirmed
     }
   }
 
   /**
-   * Resets the form to its initial state, clearing all inputs.
+   * Resets the form to its initial state.
    */
   resetForm() {
     this.questionForm.reset(); // Reset the form
     const answersArray = this.questionForm.get('answers') as FormArray;
-    answersArray.clear(); // Clear answers
-    answersArray.push(new FormControl('')); // Add an empty answer
+    answersArray.clear(); // Clear the answers array
+    answersArray.push(new FormControl('')); // Add an initial empty answer
   }
 
   /**
-   * Saves the current state of the questions to preferences.
+   * Saves the current state of questions using Preferences API.
    */
   saveState() {
-    Preferences.set({ key: 'questions', value: JSON.stringify(this.questions) }); // Save questions
+    Preferences.set({
+      key: 'questions',
+      value: JSON.stringify(this.questions),
+    });
   }
 
   /**
-   * Loads the saved state of the questions from preferences.
+   * Loads the saved state of questions from Preferences.
    */
   async loadState() {
     const { value } = await Preferences.get({ key: 'questions' });
     if (value) {
-      this.questions = JSON.parse(value); // Load questions
+      this.questions = JSON.parse(value); // Load and parse the saved questions
     }
   }
 }

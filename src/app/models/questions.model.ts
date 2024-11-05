@@ -1,4 +1,3 @@
-// questions.model.ts
 
 /**
  * Interface representing a single question and its associated answers.
