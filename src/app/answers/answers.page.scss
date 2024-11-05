@@ -1,27 +1,64 @@
+ion-label.question-number,
+ion-label.current-time {
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .question {
   text-align: center;
   margin-bottom: 20px;
+
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
 }
 
 ion-item {
-  --min-height: 50px;
-}
-.question-number {
-  font-size: 1.2em;
-  font-weight: bold;
-  padding-left: 10px;
-}
-.current-time {
-  font-size: 1.2em;
-  padding-right: 10px;
-}
-.correct-answer {
-  background-color: #d4edda; /* světle zelená */
-  color: #155724; /* tmavě zelená */
+  --inner-padding-end: 16px;
+  --inner-padding-start: 16px;
+  --border-radius: 10px;
+  --background: #fff;
+  --box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
 }
 
-.incorrect-answer {
-  background-color: #f8d7da; /* světle červená */
-  color: #721c24; /* tmavě červená */
+.correct-feedback {
+  color: green;
+  font-size: 18px;
+  margin-top: 15px;
+  text-align: left;
 }
 
+.incorrect-feedback {
+  color: red;
+  font-size: 18px;
+  margin-top: 15px;
+  text-align: left;
+}
+
+.feedback-container {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.correct-button {
+  --background: lightgreen;
+  --color: black;
+}
+
+.incorrect-button {
+  --background: lightcoral;
+  --color: black;
+}
+
+.dark-blue-button {
+  background-color: #598BC8; /* Tmavě modrá barva */
+  color: white; /* Barva textu na bílou */
+
+  &:hover {
+    background-color: #598BC8; /* Trochu světlejší modrá při najetí myší */
+  }
+}
