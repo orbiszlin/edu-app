@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="center-title">Manage Questions</ion-title> <!-- Title aligned to center -->
+    <ion-title class="center-title">Manage Questions</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,14 +8,12 @@
   <ion-grid class="ion-padding">
     <ion-row class="ion-justify-content-between">
       <ion-col size="auto">
-        <ion-button>Back</ion-button> <!-- Button to go back -->
+        <ion-button (click)="goBack()">Back</ion-button>
       </ion-col>
       <ion-col size="auto">
-        <ion-button (click)="openModal()">Add</ion-button> <!-- Button to add a question -->
+        <ion-button (click)="openModal()">Add</ion-button>
         <ion-button (click)="removeQuestion()" [disabled]="selectedQuestion === null">Remove</ion-button>
-        <!-- Button to remove a question -->
         <ion-button (click)="modifyQuestion()" [disabled]="selectedQuestion === null">Modify</ion-button>
-        <!-- Button to modify a question -->
       </ion-col>
     </ion-row>
 
@@ -23,14 +21,12 @@
       <ion-card-content>
         <ion-list>
           <ion-item *ngFor="let question of questions; let i = index" (click)="selectQuestion(i)">
-            <ion-label>{{ question.question }}</ion-label> <!-- Display the question text -->
+            <ion-label>{{ question.question }}</ion-label>
             <ion-icon name="chevron-down" slot="end" *ngIf="!question.showAnswers"></ion-icon>
-            <!-- Icon to show answers -->
             <ion-icon name="chevron-up" slot="end" *ngIf="question.showAnswers"></ion-icon>
-            <!-- Icon to hide answers -->
             <ion-list *ngIf="question.showAnswers">
               <ion-item *ngFor="let answer of question.answers">
-                <ion-label>{{ answer }}</ion-label> <!-- Display answers -->
+                <ion-label>{{ answer }}</ion-label>
               </ion-item>
             </ion-list>
           </ion-item>
@@ -39,37 +35,38 @@
     </ion-card>
   </ion-grid>
 
-  <!-- Modal for adding/modifying a question -->
   <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Cancel</ion-button> <!-- Button to cancel -->
+            <ion-button (click)="cancel()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Question Creation</ion-title> <!-- Title of the modal window -->
+          <ion-title>Question Creation</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirm()">Confirm</ion-button> <!-- Button to confirm -->
+            <ion-button (click)="confirm()">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <form [formGroup]="questionForm"> <!-- Reactive form -->
+        <form [formGroup]="questionForm">
           <ion-item>
             <ion-input placeholder="Enter question" formControlName="question"></ion-input>
-            <!-- Input for the question -->
           </ion-item>
-          <ng-container formArrayName="answers"> <!-- Container for answers -->
-            <ion-item *ngFor="let answer of answersControls; let i = index"> <!-- Dynamic field for answers -->
+          <ng-container formArrayName="answers">
+            <ion-item *ngFor="let answer of answersControls; let i = index">
               <ion-input placeholder="Enter answer {{ i + 1 }}" [formControl]="answer"></ion-input>
-              <!-- Input for the answer -->
               <ion-button *ngIf="answersControls.length > 1" fill="clear" (click)="removeAnswer(i)">
-                <ion-icon name="remove-circle-outline"></ion-icon> <!-- Button to remove an answer -->
+                <ion-icon name="remove-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" (click)="removeAnswerWithModal(i)">
+                <ion-icon name="trash-outline"></ion-icon>
+                Remove Answer
               </ion-button>
             </ion-item>
           </ng-container>
           <ion-item lines="none">
-            <ion-button (click)="addAnswer()" fill="clear">
+            <ion-button (click)="addAnswer()" fill="clear" [disabled]="answersControls.length >= 4">
               <ion-icon name="add-circle-outline"></ion-icon>
               Add Answer
             </ion-button>
