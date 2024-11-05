@@ -24,14 +24,13 @@ export class LoginScreenPage implements OnInit {
   public alertButtons = ['Action'];
   public alertInputs = [
     {
-      type: 'number',
       placeholder: 'Code',
-      min: 1,
-      max: 6,
+      attributes: {
+         //type: 'number',// s tímto nefunguje maxlenght, nepoužívat
+        maxlength: 6
+      },
     },
   ];
-
-
 
 
   constructor() { }
