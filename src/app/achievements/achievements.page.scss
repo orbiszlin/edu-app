@@ -36,9 +36,12 @@
   cursor: pointer;
   transition: transform 0.3s;
 }
+.new-square .square-text {
+  font-size: 38px;
+}
 
 .square.expanded {
-  transform: scale(1.2); /* Zvětšení čtverce při kliknutí */
+  transform: scale(1.5); /* Zvětšení čtverce při kliknutí */
   background-color: #4A76B1; /* Mírná změna barvy pro efekt */
 }
 
@@ -49,12 +52,19 @@
   align-items: center;
   justify-content: center;
 }
+.square-title {
+  font-size: 20px; /* Adjust as needed */
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  margin-bottom: 5px;
+}
 
 .square-text {
   color: white;
   font-size: 16px;
   text-align: center;
-  font-size: 32px; /* Zvětšeno na dvojnásobek (původně 32px) */
+  font-size: 18px; /* Zvětšeno na dvojnásobek (původně 32px) */
 }
 .svg-slot img {
   width: 50px; /* Nastavte požadovanou šířku */

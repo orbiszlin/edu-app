@@ -6,22 +6,27 @@
 
 <ion-content>
   <div class="container">
-    <!-- Velký čtverec uprostřed nahoře -->
+    <!-- Large square at the top showing completion percentage -->
     <div class="new-square">
       <span class="square-text">Complete (-%)</span>
     </div>
 
-    <!-- Grid s 20 čtverci uspořádaný po 5 čtvercích v řadě -->
+    <!-- Grid of achievements with 20 squares in a 5x4 layout -->
     <div class="grid-container">
       <div *ngFor="let square of squares; let index = index"
            class="square"
            (click)="toggleText(index)"
            [class.expanded]="square.expanded">
         <div class="svg-slot" *ngIf="!square.expanded">
-          <!-- SVG pro každý čtverec, pokud není rozbalen -->
+          <!-- SVG for each square when it is not expanded -->
           <img [src]="square.svg" alt="SVG Icon" />
         </div>
-        <div *ngIf="square.expanded" class="square-text">{{ square.text }}</div>
+
+        <!-- Expanded view showing title and description -->
+        <div *ngIf="square.expanded">
+          <div class="square-title">{{ square.title }}</div>
+          <div class="square-text">{{ square.text }}</div>
+        </div>
       </div>
     </div>
   </div>
