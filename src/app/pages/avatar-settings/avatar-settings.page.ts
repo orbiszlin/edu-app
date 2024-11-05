@@ -5,21 +5,23 @@ import {Avatar, User} from "../../models/user.model";
 import {
   IonButton,
   IonButtons, IonCol,
-  IonContent,
+  IonContent, IonFab, IonFabButton,
   IonGrid,
-  IonHeader, IonInput,
-  IonMenuButton, IonRow,
+  IonHeader, IonIcon, IonInput,
+  IonMenuButton, IonModal, IonRow,
   IonTitle,
   IonToolbar
 } from '@ionic/angular/standalone';
 import {debounceTime} from "rxjs";
+import {addIcons} from "ionicons";
+import {createOutline} from "ionicons/icons";
 
 @Component({
   selector: 'app-avatar-settings',
   templateUrl: './avatar-settings.page.html',
   styleUrls: ['./avatar-settings.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonGrid, IonCol, IonRow, IonButton, IonInput, ReactiveFormsModule]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonGrid, IonCol, IonRow, IonButton, IonInput, ReactiveFormsModule, IonIcon, IonFab, IonFabButton, IonModal]
 })
 export class AvatarSettingsPage implements OnInit {
 
@@ -29,6 +31,9 @@ export class AvatarSettingsPage implements OnInit {
   username = new FormControl<string>("", [Validators.required]);
 
   constructor() {
+    addIcons({
+      createOutline
+    })
     this.user = {
       id: 0,
       username: "lojza",

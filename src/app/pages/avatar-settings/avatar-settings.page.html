@@ -13,14 +13,34 @@
       <ion-title size="large">avatar_settings</ion-title>
     </ion-toolbar>
   </ion-header>
-
   <div class="container">
-    <img width="200" [src]="'assets/avatars/' + user.avatar.bodyName + '.svg'" alt="avatar">
+
+    <div class="avatarContainer">
+      <img width="200px" [src]="'assets/avatars/' + user.avatar.bodyName + '.svg'" alt="avatar">
+      <ion-button class="editButton" shape="round" id="open-modal">
+        <ion-icon slot="icon-only" name="create-outline" size="large" color="primary"></ion-icon>
+      </ion-button>
+    </div>
+
     <div class="textField">
-      <ion-input type="text" placeholder="Username" clearOnEdit="true" maxlength="20"
+      <ion-input type="text" placeholder="Game alias" clearOnEdit="true" maxlength="20"
                  [formControl]="username"></ion-input>
     </div>
     <ion-button (click)="saveAvatar()">Save</ion-button>
   </div>
+
+
+  <ion-modal #modal trigger="open-modal">
+    <ng-template>
+      <ion-content>
+        <ion-toolbar>
+          <ion-title>Modal</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="light" (click)="modal.dismiss()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
 </ion-content>
