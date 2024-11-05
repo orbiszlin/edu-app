@@ -35,9 +35,9 @@ export class AvatarSettingsPage implements OnInit {
       email: "neco@orbiszlin.cz",
       password: "string",
       avatar: {
-        bodyId: 0,
+        bodyName: "avatar",
         hatId: 0,
-        alias: "ahoj",
+        alias: "avatar.svg",
       }
     }
     this.avatarCopy = this.user.avatar;

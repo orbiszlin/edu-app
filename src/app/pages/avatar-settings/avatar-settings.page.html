@@ -15,7 +15,7 @@
   </ion-header>
 
   <div class="container">
-    <div>{{ avatarCopy.bodyId }}</div>
+    <img width="200" [src]="'assets/avatars/' + user.avatar.bodyName + '.svg'" alt="avatar">
     <div class="textField">
       <ion-input type="text" placeholder="Username" clearOnEdit="true" maxlength="20"
                  [formControl]="username"></ion-input>
