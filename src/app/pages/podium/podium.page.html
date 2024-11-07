@@ -1,55 +1,58 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>podium</ion-title>
+    <ion-title>Podium</ion-title>
   </ion-toolbar>
 </ion-header>
 
-
-
-
-<ion-header>
-  <ion-toolbar>
-
-    <ion-button expand="block" size="large" class="statistics-button" shape="round">
+<ion-content [fullscreen]="true">
+  <div class="statistics-button-container">
+    <ion-button expand="block" size="large" class="statistics-button" (click)="openModal('Statistiky')">
       Statistiky
     </ion-button>
-  </ion-toolbar>
-</ion-header>
+  </div>
 
-<div class="content">
+  <div class="content">
+    <div class="podium">
+      <!-- 2. místo -->
+      <div class="podium-item second">
+        <div class="avatar">
+          <img src="https://via.placeholder.com/50" alt="Avatar 2">
+        </div>
+        <div class="podium-block"></div>
+        <div class="medal silver" (click)="openModal('2. místo')">2</div>
+      </div>
 
-  <div class="podium">
+      <div class="podium-item first">
+        <div class="avatar">
+          <img src="https://via.placeholder.com/50" alt="Avatar 1">
+        </div>
+        <div class="podium-block"></div>
+        <div class="medal gold" (click)="openModal('1. místo')">1</div>
+      </div>
 
-    <div class="podium-item second">
-      <div class="podium-block"></div>
-      <div class="medal silver">2</div>
+      <div class="podium-item third">
+        <div class="avatar">
+          <img src="https://via.placeholder.com/50" alt="Avatar 3">
+        </div>
+        <div class="podium-block"></div>
+        <div class="medal bronze" (click)="openModal('3. místo')">3</div>
+      </div>
     </div>
 
-    <div class="podium-item first">
-      <div class="podium-block"></div>
-      <div class="medal gold">1</div>
-    </div>
-
-    <div class="podium-item third">
-      <div class="podium-block"></div>
-      <div class="medal bronze">3</div>
+    <div class="buttons-horizontal">
+      <ion-button>Odveta</ion-button>
+      <ion-button>Lobby</ion-button>
+      <ion-button>Nová hra</ion-button>
     </div>
   </div>
 
-
-  <div class="buttons-horizontal">
-    <ion-button>Odveta</ion-button>
-    <ion-button>Lobby</ion-button>
-    <ion-button>Nová hra</ion-button>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="closeModal()">
+    <ion-content>
+      <div class="modal-content">
+        <h2>{{ modalTitle }}</h2>
+        <p>Zde můžete zobrazit podrobnosti o {{ modalTitle }}.</p>
+        <ion-button expand="block" (click)="closeModal()">Zavřít</ion-button>
+      </div>
+    </ion-content>
+  </ion-modal>
+</ion-content>

@@ -1,72 +1,135 @@
-.statistics-button {
-  height: 60px;
-  font-size: 1.5em;
-  --background: #6699cc;
+.statistics-button-container {
+  padding: 10px 20px;
 }
+
+.statistics-button {
+  border-radius: 15px;
+  height: 60px;
+  font-size: 20px;
+  background: var(--ion-color-secondary);
+  width: 300px;
+  margin: 0 auto;
+}
+
+ion-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .content {
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 64px;
 }
+
 .podium {
   display: flex;
   justify-content: center;
   align-items: flex-end;
   margin-top: 50px;
 }
+
 .podium-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 10px;
+  margin: 0 1px;
 }
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .podium-block {
-  background-color: #d97ea1;
+  background-color: var(--ion-color-tertiary);
   width: 100px;
   border-radius: 5px 5px 0 0;
 }
+
 .podium-item.first .podium-block {
   height: 250px;
 }
+
 .podium-item.second .podium-block {
   height: 180px;
 }
+
 .podium-item.third .podium-block {
   height: 150px;
 }
+
 .medal {
-  background-color: #e0e0e0;
-  color: #fff;
+  background-color: var(--ion-color-light-shade);
+  color: var(--ion-color-light-tint);
   padding: 5px 10px;
   border-radius: 50%;
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: -60px;
   font-size: 1.2em;
+  cursor: pointer;
 }
+
 .gold {
   background-color: gold;
 }
+
 .silver {
   background-color: silver;
 }
+
 .bronze {
-  background-color: #cd7f32;
+  background-color: #cd7f32 ;
 }
+
 .buttons-horizontal {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 3rem;
   margin-top: 20px;
+
+
 }
+
 ion-button {
+  color: var(--ion-color-light);
+  border-radius: 15px;
   width: auto;
   margin: 0 5px;
-  background-color: #6699cc;
+  background: var(--ion-color-secondary);
 }
+
 ion-button:hover {
-  background-color: #5588bb;
+  background: var(--ion-color-secondary);
 }
+
+.modal-content {
+  text-align: center;
+  padding: 20px;
+}
+
+.modal-content h2 {
+  font-size: 24px;
+  color: var(--ion-color-dark-tint);
+}
+
+.modal-content p {
+  font-size: 16px;
+  color: var(--ion-color-medium);
+}
+
 @media (max-width: 600px) {
   .statistics-button {
     font-size: 1.2em;

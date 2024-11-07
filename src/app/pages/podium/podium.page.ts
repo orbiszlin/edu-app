@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-  IonButton,
+  IonButton, IonButtons,
   IonCol,
-  IonContent,
+  IonContent, IonFooter,
   IonGrid,
-  IonHeader,
+  IonHeader, IonInput, IonMenuButton, IonModal,
   IonRow,
   IonTitle,
   IonToolbar
@@ -17,13 +17,27 @@ import {
   templateUrl: './podium.page.html',
   styleUrls: ['./podium.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonGrid, IonRow, IonCol, IonButton]
+  imports: [
+    IonContent, IonHeader, IonTitle, IonToolbar,
+    CommonModule, FormsModule, IonGrid, IonRow, IonCol,
+    IonButton, IonButtons, IonInput, IonMenuButton, IonModal, IonFooter
+  ]
 })
 export class PodiumPage implements OnInit {
+  isModalOpen = false;
+  modalTitle = '';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  openModal(title: string) {
+    this.modalTitle = title;
+    this.isModalOpen = true;
   }
 
+  closeModal() {
+    this.isModalOpen = false;
+  }
 }
+
