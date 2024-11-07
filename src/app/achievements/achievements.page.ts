@@ -57,7 +57,7 @@ export class AchievementsPage implements OnInit {
   }
 
   toggleText(index: number) {
-    // If the clicked square is the same as the one that was clicked before, close it
+    // If the clicked square is the same as the one that was clicked before, close it.
     if (this.clickedSquare === index) {
       this.squares[index].expanded = false;
       this.clickedSquare = null;
