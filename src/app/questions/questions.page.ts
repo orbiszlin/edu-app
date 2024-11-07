@@ -18,13 +18,10 @@ import {
   IonCardContent,
   IonGrid,
   IonModal,
-  IonButtons
+  IonButtons, IonToggle
 } from '@ionic/angular/standalone';
 import { Preferences } from '@capacitor/preferences';
 
-/**
- * Component for managing questions and answers.
- */
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.page.html',
@@ -50,219 +47,189 @@ import { Preferences } from '@capacitor/preferences';
     IonCardContent,
     IonGrid,
     IonButtons,
+    IonToggle,
   ],
 })
 export class QuestionsPage implements OnInit {
-  @ViewChild(IonModal) modal!: IonModal; // Reference to the modal component
+  @ViewChild(IonModal) modal!: IonModal;
 
-  /** Reactive form for questions and answers */
+  // The form group to manage the question form
   questionForm!: FormGroup;
 
-  /** List of questions in the application */
+  // Array holding the list of questions and answers
   questions: { question: string; answers: string[]; showAnswers: boolean }[] = [];
 
-  /** Index of the currently selected question */
+  // Index of the selected question
   selectedQuestion: number | null = null;
 
-  /** Flag indicating whether an existing question is being edited */
+  // Flag to track if the page is in edit mode
   isEditing: boolean = false;
 
-  /**
-   * Constructor for the component.
-   * @param fb - Instance of FormBuilder for managing forms
-   */
   constructor(private fb: FormBuilder) { }
 
-  /**
-   * Initializes the component and loads the saved state.
-   */
   ngOnInit() {
-    this.initializeForm(); // Initialize the form
-    this.loadState(); // Load the saved state
+    // Initialize the form and load the state (questions)
+    this.initializeForm();
+    this.loadState();
   }
 
-  /**
-   * Initializes the form with one empty answer.
-   */
+  // Initializes the form group with a question and answers form array
   initializeForm() {
     this.questionForm = new FormGroup({
-      question: new FormControl(""), // Empty question field
-      answers: new FormArray([new FormControl("")]), // Start with one answer
+      question: new FormControl(""),
+      answers: new FormArray([new FormControl("")]), // Initially one empty answer
     });
   }
 
-  /**
-   * Accesses the dynamic controls for answers.
-   * @returns Answer controls as FormControl[]
-   */
+  // Gets the controls of the answers form array
   get answersControls() {
     return (this.questionForm.get('answers') as FormArray).controls as FormControl[];
   }
 
-  /**
-   * Adds a new answer to the form if there are less than 4 answers.
-   */
+  // Adds a new answer input field to the form
   addAnswer() {
     const answersArray = this.questionForm.get('answers') as FormArray;
-    if (answersArray.length < 4) { // Check if the limit is not reached
-      answersArray.push(new FormControl("")); // Add a new control for an answer
+    if (answersArray.length < 4) {
+      answersArray.push(new FormControl("")); // Limit answers to 4
     } else {
-      alert("You can only add up to 4 answers."); // Optionally show a message to the user
+      alert("You can only add up to 4 answers.");
     }
   }
 
-  /**
-   * Removes an answer based on the index.
-   * @param index - Index of the answer to be removed.
-   */
+  // Removes an answer at the specified index
   removeAnswer(index: number) {
     const answersArray = this.questionForm.get('answers') as FormArray;
-    if (answersArray.length > 1) { // Allows removal only if there is more than one answer
-      answersArray.removeAt(index); // Remove the answer based on the index
+    if (answersArray.length > 1) {
+      answersArray.removeAt(index); // Remove answer at index
+      this.validateAnswers(); // Validate after removal
     }
   }
 
-  /**
-   * Removes an answer with confirmation dialog.
-   * @param index - Index of the answer to be removed.
-   */
+  // Removes an answer with a confirmation prompt
   removeAnswerWithModal(index: number) {
     const answersArray = this.questionForm.get('answers') as FormArray;
-    if (answersArray.length > 1) {
-      if (confirm("Are you sure you want to remove this answer?")) {
-        answersArray.removeAt(index); // Remove the answer based on the index
-      }
+    if (answersArray.length > 1 && confirm("Are you sure you want to remove this answer?")) {
+      answersArray.removeAt(index); // Remove answer if confirmed
+      this.validateAnswers(); // Validate after removal
     }
   }
 
-  /**
-   * Selects a question to edit and toggles the visibility of its answers.
-   * @param index - Index of the selected question.
-   */
+  // Ensures there is at least one answer control and removes empty ones
+  validateAnswers() {
+    const answersArray = this.questionForm.get('answers') as FormArray;
+    answersArray.controls.forEach((control, index) => {
+      if (!control.value || control.value.trim() === "") {
+        answersArray.removeAt(index); // Remove empty answer controls
+      }
+    });
+
+    // Ensure at least one empty answer control remains for user convenience
+    if (answersArray.length === 0) {
+      answersArray.push(new FormControl("")); // Add a new answer control if empty
+    }
+  }
+
+  // Selects a question to toggle the visibility of its answers
   selectQuestion(index: number) {
-    this.selectedQuestion = index; // Set the selected question
-    this.questions[index].showAnswers = !this.questions[index].showAnswers; // Toggle visibility of answers
+    this.selectedQuestion = index;
+    this.questions[index].showAnswers = !this.questions[index].showAnswers; // Toggle answers visibility
   }
 
-  /**
-   * Opens the modal window for adding or editing a question.
-   */
+  // Opens the modal to add a new question
   openModal() {
-    this.resetForm(); // Reset the form before opening the modal
-    this.modal.present(); // Open the modal window
+    this.resetForm(); // Reset form to default state
+    this.modal.present(); // Show modal
   }
 
-  /**
-   * Removes the selected question from the list.
-   */
+  // Removes the selected question from the list
   removeQuestion() {
     if (this.selectedQuestion !== null) {
-      this.questions.splice(this.selectedQuestion, 1); // Remove the selected question
-      this.selectedQuestion = null; // Reset the selected question
-      this.saveState(); // Save the state after removing the question
+      this.questions.splice(this.selectedQuestion, 1); // Remove selected question
+      this.selectedQuestion = null; // Deselect question
+      this.saveState(); // Save updated state
     }
   }
 
-  /**
-   * Modifies an existing question by pre-filling the form with its details.
-   */
+  // Prepares the form for editing the selected question
   modifyQuestion() {
     if (this.selectedQuestion !== null) {
       const questionToEdit = this.questions[this.selectedQuestion];
-
-      // Set the question in the form
       this.questionForm.patchValue({
         question: questionToEdit.question
       });
 
-      // Clear existing answers in the FormArray and set new ones
       const answersArray = this.questionForm.get('answers') as FormArray;
-      answersArray.clear(); // Clear the answers array
-
-      // Dynamically add all answers from the selected question
+      answersArray.clear();
       questionToEdit.answers.forEach((answer: string) => {
-        answersArray.push(new FormControl(answer));
+        answersArray.push(new FormControl(answer)); // Populate the form with existing answers
       });
 
-      this.isEditing = true; // Set editing flag to true
-      this.modal.present(); // Open the modal for editing
+      this.isEditing = true; // Mark the form as being in edit mode
+      this.modal.present(); // Show modal for editing
     }
   }
 
-  /**
-   * Saves the current question and answers, adding to the questions array.
-   */
+  // Confirms the question creation or modification
   confirm() {
-    const questionData = this.questionForm.value; // Get form values
+    this.validateAnswers(); // Validate answers before confirming
+
+    const questionData = this.questionForm.value;
     if (this.isEditing) {
-      // If editing an existing question, update it in the array
       if (this.selectedQuestion !== null) {
+        // Edit the selected question
         this.questions[this.selectedQuestion] = {
           question: questionData.question,
           answers: questionData.answers,
-          showAnswers: false // Reset showAnswers
+          showAnswers: false
         };
       }
     } else {
-      // If creating a new question, add it to the array
+      // Add a new question
       this.questions.push({
         question: questionData.question,
         answers: questionData.answers,
-        showAnswers: false // Initially hide answers
+        showAnswers: false
       });
     }
-    this.saveState(); // Save the current state
+    this.saveState(); // Save updated questions state
     this.modal.dismiss(); // Close the modal
     this.isEditing = false; // Reset editing flag
   }
 
-  /**
-   * Resets the form for adding a new question.
-   */
+  // Resets the form for adding a new question
   resetForm() {
-    this.questionForm.reset(); // Reset the form controls
+    this.questionForm.reset(); // Reset form values
     const answersArray = this.questionForm.get('answers') as FormArray;
-    answersArray.clear(); // Clear existing answers
-    answersArray.push(new FormControl("")); // Start with one empty answer
+    answersArray.clear(); // Clear answers array
+    answersArray.push(new FormControl("")); // Add a new empty answer control
   }
 
-  /**
-   * Cancels the modal without saving changes.
-   */
+  // Closes the modal without saving
   cancel() {
-    this.modal.dismiss(); // Close the modal
-    this.resetForm(); // Reset the form
+    this.modal.dismiss(); // Close modal
+    this.resetForm(); // Reset form to initial state
   }
 
-  /**
-   * Loads the saved state from local storage.
-   */
+  // Loads the state from local storage (or Preferences)
   async loadState() {
-    const { value } = await Preferences.get({ key: 'questions' }); // Get saved questions
+    const { value } = await Preferences.get({ key: 'questions' });
     if (value) {
-      this.questions = JSON.parse(value); // Parse the JSON value into the questions array
+      this.questions = JSON.parse(value); // Parse and load stored questions
     }
   }
 
-  /**
-   * Saves the current state to local storage.
-   */
+  // Saves the state to local storage (or Preferences)
   async saveState() {
-    await Preferences.set({ key: 'questions', value: JSON.stringify(this.questions) }); // Save questions as JSON
+    await Preferences.set({ key: 'questions', value: JSON.stringify(this.questions) });
   }
 
-  /**
-   * Callback when the modal is dismissed.
-   * @param event - Event object from the dismissal.
-   */
+  // Optional function to handle modal dismissal if needed
   onWillDismiss(event: any) {
-    // Handle modal dismissal if needed
+    // Handle modal dismissal events
   }
 
-  /**
-   * Navigates back to the previous page.
-   */
+  // Placeholder for a method to navigate back to the previous page
   goBack() {
     // Implement navigation logic to go back to the previous page
-  }
+    }
 }
