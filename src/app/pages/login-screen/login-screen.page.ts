@@ -21,7 +21,17 @@ import {
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonGrid, IonCol, IonRow, IonAlert]
 })
 export class LoginScreenPage implements OnInit {
-  alertButtons = ['Action'];
+  public alertButtons = ['Action'];
+  public alertInputs = [
+    {
+      placeholder: 'Code',
+      attributes: {
+         //type: 'number',// s tímto nefunguje maxlenght, nepoužívat
+        maxlength: 6
+      },
+    },
+  ];
+
 
   constructor() { }
 
