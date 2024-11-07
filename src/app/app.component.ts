@@ -53,7 +53,6 @@ export class AppComponent {
     {title: 'Login', url: '/login-screen', icon: 'warning'},
 
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor() {
     addIcons({

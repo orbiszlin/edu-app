@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Avatar} from "../../models/user.model";
+import {Avatar, User} from "../../models/user.model";
 import {
   IonButton,
   IonButtons, IonCol,
@@ -12,6 +12,7 @@ import {
   IonTitle,
   IonToolbar
 } from '@ionic/angular/standalone';
+import {debounceTime} from "rxjs";
 
 @Component({
   selector: 'app-avatar-settings',
@@ -22,25 +23,34 @@ import {
 })
 export class AvatarSettingsPage implements OnInit {
 
+  user: User;
   avatarCopy: Avatar;
 
   username = new FormControl<string>("", [Validators.required]);
 
   constructor() {
-    this.avatarCopy = {
-      bodyId: 0,
-      hatId: 0,
-      name: "ahoj",
+    this.user = {
+      id: 0,
+      username: "lojza",
+      email: "neco@orbiszlin.cz",
+      password: "string",
+      avatar: {
+        bodyId: 0,
+        hatId: 0,
+        alias: "ahoj",
+      }
     }
+    this.avatarCopy = this.user.avatar;
 
-    this.username.setValue(this.avatarCopy.name, {
+    this.username.setValue(this.avatarCopy.alias, {
       emitEvent: false
     });
 
-    this.username.valueChanges.subscribe(data => {
+    this.username.valueChanges.pipe(debounceTime(400)).subscribe(data => {
       if (data != null) {
-        this.avatarCopy.name = data;
+        this.avatarCopy.alias = data;
       }
+      console.log(data);
     })
   }
 
