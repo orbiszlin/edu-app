@@ -35,9 +35,9 @@ export class AchievementsPage implements OnInit {
     this.squares = [
         { svg: 'assets/svg/icon1.svg', title: 'Game Winner', text: 'Win the game', expanded: false },
         { svg: 'assets/svg/icon2.svg', title: 'Field Stealer', text: 'Steal your opponent\'s field', expanded: false },
-        { svg: 'assets/svg/icon3.svg', title: 'Blank Field Conqueror', text: 'Acquire blank field', expanded: false },
-        { svg: 'assets/svg/icon4.svg', title: 'Five-Time Winner', text: 'Win 5 games in a row', expanded: false },
-        { svg: 'assets/svg/icon5.svg', title: 'Opponent Destroyer', text: 'Destroy your opponent', expanded: false },
+        { svg: 'assets/svg/icon3.svg', title: 'Field Conqueror', text: 'Acquire blank field', expanded: false },
+        { svg: 'assets/svg/icon4.svg', title: 'Master', text: 'Win 5 games in a row', expanded: false },
+        { svg: 'assets/svg/icon5.svg', title: 'Destroyer', text: 'Steal from your opponents 50 times ', expanded: false },
         { svg: 'assets/svg/icon6.svg', title: 'Row Master', text: 'Acquire 10 fields in a row', expanded: false },
         { svg: 'assets/svg/icon7.svg', title: 'Veteran Winner', text: 'Win 25 games', expanded: false },
         { svg: 'assets/svg/icon8.svg', title: 'Top Answerer', text: 'Most questions answered', expanded: false },
@@ -46,13 +46,13 @@ export class AchievementsPage implements OnInit {
         { svg: 'assets/svg/icon11.svg', title: 'Champion', text: 'Became best player 10 times', expanded: false },
         { svg: 'assets/svg/icon12.svg', title: 'Mystery Gift', text: 'Acquire mystery gift', expanded: false },
         { svg: 'assets/svg/icon13.svg', title: 'Ultimate Winner', text: 'Win 100 games', expanded: false },
-        { svg: 'assets/svg/icon14.svg', title: 'Silent Genius', text: 'Nobody answered your question', expanded: false },
+        { svg: 'assets/svg/icon14.svg', title: 'Silent Genius', text: 'All question answered', expanded: false },
         { svg: 'assets/svg/icon15.svg', title: 'Mountain Conqueror', text: 'Acquire all mountains', expanded: false },
         { svg: 'assets/svg/icon16.svg', title: '???', text: 'Nobody knows how to achieve it', expanded: false },
         { svg: 'assets/svg/icon17.svg', title: 'Question Master', text: 'Create 100 questions', expanded: false },
         { svg: 'assets/svg/icon18.svg', title: 'Field Protector', text: 'Protect your field', expanded: false },
-        { svg: 'assets/svg/icon19.svg', title: 'Map Controller', text: 'Control the whole map', expanded: false },
-        { svg: 'assets/svg/icon20.svg', title: 'Achievement Completer', text: 'Complete all achievements', expanded: false },
+        { svg: 'assets/svg/icon19.svg', title: 'Defender', text: 'Protect your field 500 times', expanded: false },
+        { svg: 'assets/svg/icon20.svg', title: 'Complete', text: 'Complete all achievements', expanded: false },
       ];
   }
 

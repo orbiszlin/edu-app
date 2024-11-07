@@ -8,13 +8,17 @@
 .new-square {
   width: 324.13px;
   height: 86.44px;
-  background-color: #5B6CB2;
+  background-color: var(--ion-color-secondary);
   border-radius: 10px;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--ion-color-secondary-contrast);
+}
+
+.new-square .square-text {
+  font-size: 38px;
 }
 
 .grid-container {
@@ -26,7 +30,8 @@
 }
 
 .square {
-  background-color: #598BC8;
+  position: relative; /* Pro pseudo-element */
+  background-color: var(--ion-color-primary);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -34,15 +39,26 @@
   width: 164px;
   height: 121px;
   cursor: pointer;
-  transition: transform 0.3s;
-}
-.new-square .square-text {
-  font-size: 38px;
+  transition: transform 0.3s, background-color 0.3s;
+  z-index: 1; /* Běžný čtverec má základní prioritu */
 }
 
 .square.expanded {
   transform: scale(1.5); /* Zvětšení čtverce při kliknutí */
-  background-color: #4A76B1; /* Mírná změna barvy pro efekt */
+  background-color: var(--ion-color-secondary); /* Vnější barva (výplň) */
+  z-index: 10; /* Zajišťuje, že rozšířený čtverec bude nad ostatními */
+}
+
+.square.expanded::before {
+  content: '';
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  background-color: var(--ion-color-primary); /* Vnitřní barva (cesta) */
+  border-radius: 5px; /* Zachování zaoblení */
+  z-index: 0; /* Pseudo-element je pod textem a ikony */
 }
 
 .svg-slot {
@@ -52,21 +68,26 @@
   align-items: center;
   justify-content: center;
 }
+
+.svg-slot img {
+  width: 50px;
+  height: 50px;
+}
+
 .square-title {
-  font-size: 20px; /* Adjust as needed */
+  font-size: 18px;
   font-weight: bold;
-  color: white;
+  color: var(--ion-color-secondary-contrast);
   text-align: center;
   margin-bottom: 5px;
+  position: relative; /* Zajištění, že text zůstane nad pseudo-elementem */
+  z-index: 2; /* Text bude nad pseudo-elementem */
 }
 
 .square-text {
-  color: white;
-  font-size: 16px;
+  color: var(--ion-color-secondary-contrast);
+  font-size: 15px;
   text-align: center;
-  font-size: 18px; /* Zvětšeno na dvojnásobek (původně 32px) */
-}
-.svg-slot img {
-  width: 50px; /* Nastavte požadovanou šířku */
-  height: 50px; /* Nastavte požadovanou výšku */
+  position: relative; /* Zajištění viditelnosti nad pseudo-elementem */
+  z-index: 2; /* Text bude nad pseudo-elementem */
 }
