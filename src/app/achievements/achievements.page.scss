@@ -30,7 +30,7 @@
 }
 
 .square {
-  position: relative; /* Pro pseudo-element */
+  position: relative; /* For the pseudo-element */
   background-color: var(--ion-color-primary);
   border-radius: 10px;
   display: flex;
@@ -40,13 +40,13 @@
   height: 121px;
   cursor: pointer;
   transition: transform 0.3s, background-color 0.3s;
-  z-index: 1; /* Běžný čtverec má základní prioritu */
+  z-index: 1; /* Normal square has basic priority */
 }
 
 .square.expanded {
-  transform: scale(1.5); /* Zvětšení čtverce při kliknutí */
-  background-color: var(--ion-color-secondary); /* Vnější barva (výplň) */
-  z-index: 10; /* Zajišťuje, že rozšířený čtverec bude nad ostatními */
+  transform: scale(1.5); /* Enlarges the square on click */
+  background-color: var(--ion-color-secondary); /* Outer color (fill) */
+  z-index: 10; /* Ensures the expanded square is above the others */
 }
 
 .square.expanded::before {
@@ -56,9 +56,9 @@
   left: 5%;
   width: 90%;
   height: 90%;
-  background-color: var(--ion-color-primary); /* Vnitřní barva (cesta) */
-  border-radius: 5px; /* Zachování zaoblení */
-  z-index: 0; /* Pseudo-element je pod textem a ikony */
+  background-color: var(--ion-color-primary); /* Inner color (path) */
+  border-radius: 5px; /* Maintains rounding */
+  z-index: 0; /* The pseudo-element is below text and icons */
 }
 
 .svg-slot {
@@ -80,14 +80,14 @@
   color: var(--ion-color-secondary-contrast);
   text-align: center;
   margin-bottom: 5px;
-  position: relative; /* Zajištění, že text zůstane nad pseudo-elementem */
-  z-index: 2; /* Text bude nad pseudo-elementem */
+  position: relative; /* Ensures the text stays above the pseudo-element */
+  z-index: 2; /* Text will be above the pseudo-element */
 }
 
 .square-text {
   color: var(--ion-color-secondary-contrast);
   font-size: 15px;
   text-align: center;
-  position: relative; /* Zajištění viditelnosti nad pseudo-elementem */
-  z-index: 2; /* Text bude nad pseudo-elementem */
+  position: relative; /* Ensures visibility above the pseudo-element */
+  z-index: 2; /* Text will be above the pseudo-element */
 }
