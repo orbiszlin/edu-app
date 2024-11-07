@@ -16,7 +16,7 @@
   <div class="container">
 
     <div class="avatarContainer">
-      <img width="200px" [src]="'assets/avatars/' + user.avatar.bodyName + '.svg'" alt="avatar">
+      <img width="200px" [src]="'assets/avatars/' + avatarCopy.bodyName + '.svg'" alt="avatar">
       <ion-button class="editButton" shape="round" id="open-modal">
         <ion-icon slot="icon-only" name="create-outline" size="large" color="primary"></ion-icon>
       </ion-button>
@@ -39,6 +39,17 @@
             <ion-button color="light" (click)="modal.dismiss()">Close</ion-button>
           </ion-buttons>
         </ion-toolbar>
+        <ion-radio-group value="strawberries" (ionChange)="setAvatar($event)">
+          <div style="display: flex;flex-wrap: wrap;justify-content: space-around;">
+            @for (avatarBodyName of avatarBodyNames; track avatarBodyName) {
+              <div style="position: relative;">
+                <ion-radio [value]="avatarBodyName" style="position: absolute;width: 100%;height: 100%"></ion-radio>
+                <img [src]="'assets/avatars/' + avatarBodyName + '.svg'" alt="avatar">
+              </div>
+            }
+
+          </div>
+        </ion-radio-group>
       </ion-content>
     </ng-template>
   </ion-modal>

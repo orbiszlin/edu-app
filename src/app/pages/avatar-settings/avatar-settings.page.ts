@@ -8,7 +8,7 @@ import {
   IonContent, IonFab, IonFabButton,
   IonGrid,
   IonHeader, IonIcon, IonInput,
-  IonMenuButton, IonModal, IonRow,
+  IonMenuButton, IonModal, IonRadio, IonRadioGroup, IonRow,
   IonTitle,
   IonToolbar
 } from '@ionic/angular/standalone';
@@ -21,12 +21,16 @@ import {createOutline} from "ionicons/icons";
   templateUrl: './avatar-settings.page.html',
   styleUrls: ['./avatar-settings.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonGrid, IonCol, IonRow, IonButton, IonInput, ReactiveFormsModule, IonIcon, IonFab, IonFabButton, IonModal]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonGrid, IonCol, IonRow, IonButton, IonInput, ReactiveFormsModule, IonIcon, IonFab, IonFabButton, IonModal, IonRadioGroup, IonRadio]
 })
 export class AvatarSettingsPage implements OnInit {
 
   user: User;
   avatarCopy: Avatar;
+  avatarBodyNames = [
+    "avatar",
+    "orange",
+  ]
 
   username = new FormControl<string>("", [Validators.required]);
 
@@ -34,6 +38,7 @@ export class AvatarSettingsPage implements OnInit {
     addIcons({
       createOutline
     })
+
     this.user = {
       id: 0,
       username: "lojza",
@@ -68,6 +73,10 @@ export class AvatarSettingsPage implements OnInit {
       console.log(this.username.value)
     }
     return;
+  }
+
+  setAvatar(ev: CustomEvent): void {
+    this.avatarCopy.bodyName = ev.detail.value;
   }
 
 
