@@ -7,7 +7,7 @@ export interface User {
 }
 
 export interface Avatar {
-  bodyId: number;
+  bodyName: string;
   hatId: number;
   alias: string;
 }
