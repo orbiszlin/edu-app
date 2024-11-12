@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="center-content">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Login</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="container">
+    <ion-grid class="grid-center">
+     <ion-row class="row-center">
+        <ion-col class="col-center">
+          <ion-button class="button" color="primary" id="present-alert">Sign in with Microsoft</ion-button>
+          <ion-button class="button" color="primary" id="present-alert1">Enter a code</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-alert
+    trigger="present-alert"
+    header="Work in progress"
+    [buttons]="alertButtons"
+  ></ion-alert>
+  <ion-alert
+    trigger="present-alert1"
+    header="Enter your code"
+    [buttons]="alertButtons"
+    [inputs]="alertInputs"
+  ></ion-alert>
+</ion-content>
+
