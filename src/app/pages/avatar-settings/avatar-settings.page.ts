@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Avatar, User} from "../../models/user.model";
 import {
@@ -19,7 +19,7 @@ import {debounceTime} from "rxjs";
   templateUrl: './avatar-settings.page.html',
   styleUrls: ['./avatar-settings.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonGrid, IonCol, IonRow, IonButton, IonInput, ReactiveFormsModule]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonButtons, IonMenuButton, IonGrid, IonCol, IonRow, IonButton, IonInput, ReactiveFormsModule]
 })
 export class AvatarSettingsPage implements OnInit {
 

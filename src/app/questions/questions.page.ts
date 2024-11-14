@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
 import {
   IonButton,
@@ -28,7 +28,6 @@ import { Preferences } from '@capacitor/preferences';
   styleUrls: ['./questions.page.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     IonModal,
     IonButton,
@@ -47,8 +46,8 @@ import { Preferences } from '@capacitor/preferences';
     IonCardContent,
     IonGrid,
     IonButtons,
-    IonToggle,
-  ],
+    IonToggle
+],
 })
 export class QuestionsPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
