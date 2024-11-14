@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonAlert,
@@ -18,7 +18,7 @@ import {
   templateUrl: './login-screen.page.html',
   styleUrls: ['./login-screen.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonGrid, IonCol, IonRow, IonAlert]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonButton, IonGrid, IonCol, IonRow, IonAlert]
 })
 export class LoginScreenPage implements OnInit {
   public alertButtons = ['Action'];
