@@ -1,3 +1,4 @@
+/* Container for centering content */
 .container {
   display: flex;
   flex-direction: column;
@@ -5,9 +6,10 @@
   margin-top: 5px;
 }
 
-.new-square {
-  width: 324.13px;
-  height: 86.44px;
+/* Completion banner for achievement progress */
+.completion-banner {
+  width: 324px;
+  height: 86px;
   background-color: var(--ion-color-secondary);
   border-radius: 10px;
   margin-bottom: 16px;
@@ -17,10 +19,11 @@
   color: var(--ion-color-secondary-contrast);
 }
 
-.new-square .square-text {
+.completion-banner .banner-text {
   font-size: 38px;
 }
 
+/* Grid layout for achievement squares */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(5, 164px);
@@ -29,6 +32,7 @@
   justify-content: center;
 }
 
+/* Styles for each square in the grid */
 .square {
   position: relative; /* For the pseudo-element */
   background-color: var(--ion-color-primary);
@@ -43,6 +47,7 @@
   z-index: 1; /* Normal square has basic priority */
 }
 
+/* Styles when a square is expanded */
 .square.expanded {
   transform: scale(1.5); /* Enlarges the square on click */
   background-color: var(--ion-color-secondary); /* Outer color (fill) */
@@ -61,6 +66,7 @@
   z-index: 0; /* The pseudo-element is below text and icons */
 }
 
+/* Container for the SVG icons inside squares */
 .svg-slot {
   width: 100%;
   height: 100%;
@@ -74,6 +80,7 @@
   height: 50px;
 }
 
+/* Title inside the expanded square */
 .square-title {
   font-size: 18px;
   font-weight: bold;
@@ -84,6 +91,7 @@
   z-index: 2; /* Text will be above the pseudo-element */
 }
 
+/* Text inside the expanded square */
 .square-text {
   color: var(--ion-color-secondary-contrast);
   font-size: 15px;
