@@ -21,7 +21,6 @@ import {createOutline} from "ionicons/icons";
   templateUrl: './avatar-settings.page.html',
   styleUrls: ['./avatar-settings.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonButtons, IonMenuButton, IonGrid, IonCol, IonRow, IonButton, IonInput, ReactiveFormsModule],
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonGrid, IonCol, IonRow, IonButton, IonInput, ReactiveFormsModule, IonIcon, IonFab, IonFabButton, IonModal, IonRadioGroup, IonRadio]
 })
 export class AvatarSettingsPage implements OnInit {
