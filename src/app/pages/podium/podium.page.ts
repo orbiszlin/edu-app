@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {
   IonButton, IonButtons,
   IonCol,
@@ -11,6 +11,8 @@ import {
   IonTitle,
   IonToolbar
 } from '@ionic/angular/standalone';
+import {PodiumService} from "../../services/podium.service";
+import {Statistic} from "../../models/statistics.model";
 
 @Component({
   selector: 'app-podium',
@@ -26,10 +28,17 @@ import {
 export class PodiumPage implements OnInit {
   isModalOpen = false;
   modalTitle = '';
+  statistics: Statistic[] = [];
 
-  constructor() {}
+  constructor(
+    private podiumService: PodiumService
+  ) {
+    this.statistics = podiumService.index();
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 
   openModal(title: string) {
     this.modalTitle = title;
@@ -40,4 +49,5 @@ export class PodiumPage implements OnInit {
     this.isModalOpen = false;
   }
 }
+
 
