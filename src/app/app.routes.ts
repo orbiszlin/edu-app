@@ -32,7 +32,7 @@ export const routes: Routes = [
 
   {
     path: 'answers',
-    loadComponent: () => import('./answers/answers.page').then( m => m.AnswersPage)
+    loadComponent: () => import('./pages/answers/answers.page').then( m => m.AnswersPage)
   },
 
 ];
