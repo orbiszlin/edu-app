@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ReactiveFormsModule ,FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { MyService } from '../services/my-service.service'; // Importujeme službu
+import { QuestionModel } from '../models/questions.model'; // Importujeme model otázek
 import {
   IonButton,
   IonItem,
@@ -20,7 +21,6 @@ import {
   IonModal,
   IonButtons, IonToggle
 } from '@ionic/angular/standalone';
-import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-questions',
@@ -52,11 +52,11 @@ import { Preferences } from '@capacitor/preferences';
 export class QuestionsPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
 
+  // Definice seznamu otázek podle modelu QuestionModel
+  questions: QuestionModel[] = [];
+
   // Formulář pro otázky
   questionForm!: FormGroup;
-
-  // Seznam otázek
-  questions: { question: string; answers: string[]; showAnswers: boolean }[] = [];
 
   // Index vybrané otázky
   selectedQuestion: number | null = null;
@@ -202,7 +202,6 @@ export class QuestionsPage implements OnInit {
    * @param event - Událost zavření modalu.
    */
   onWillDismiss(event: any) {
-    // Tato funkce je volitelná, zde můžete přidat libovolnou logiku před zavřením modalu
     console.log('Modal will be dismissed', event);
   }
 
