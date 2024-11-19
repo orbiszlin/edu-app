@@ -15,6 +15,7 @@ import {
 import {debounceTime} from "rxjs";
 import {addIcons} from "ionicons";
 import {createOutline} from "ionicons/icons";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-avatar-settings',
