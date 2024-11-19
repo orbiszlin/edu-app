@@ -1,6 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-
-import { ReactiveFormsModule, FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ReactiveFormsModule ,FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { MyService } from '../services/my-service.service'; // Importujeme službu
 import {
   IonButton,
   IonItem,
@@ -47,188 +47,170 @@ import { Preferences } from '@capacitor/preferences';
     IonGrid,
     IonButtons,
     IonToggle
-],
+  ],
 })
 export class QuestionsPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
 
-  // The form group to manage the question form
+  // Formulář pro otázky
   questionForm!: FormGroup;
 
-  // Array holding the list of questions and answers
+  // Seznam otázek
   questions: { question: string; answers: string[]; showAnswers: boolean }[] = [];
 
-  // Index of the selected question
+  // Index vybrané otázky
   selectedQuestion: number | null = null;
 
-  // Flag to track if the page is in edit mode
+  // Flag pro režim úpravy
   isEditing: boolean = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private myService: MyService) { }
 
   ngOnInit() {
-    // Initialize the form and load the state (questions)
+    // Inicializace formuláře a načtení stavu
     this.initializeForm();
     this.loadState();
   }
 
-  // Initializes the form group with a question and answers form array
+  /**
+   * Inicializuje formulář pro zadávání nové otázky a odpovědí.
+   * Vytvoří prázdný formulář s jednou odpovědí.
+   */
   initializeForm() {
     this.questionForm = new FormGroup({
       question: new FormControl(""),
-      answers: new FormArray([new FormControl("")]), // Initially one empty answer
+      answers: new FormArray([new FormControl("")]), // Jedna prázdná odpověď na začátku
     });
   }
 
-  // Gets the controls of the answers form array
+  /**
+   * Získá pole všech odpovědí jako FormControl[].
+   * Umožňuje přístup k jednotlivým odpovědím formuláře.
+   */
   get answersControls() {
     return (this.questionForm.get('answers') as FormArray).controls as FormControl[];
   }
 
-  // Adds a new answer input field to the form
+  /**
+   * Přidá novou prázdnou odpověď do formuláře.
+   * Zavolá službu pro přidání odpovědi.
+   */
   addAnswer() {
-    const answersArray = this.questionForm.get('answers') as FormArray;
-    if (answersArray.length < 4) {
-      answersArray.push(new FormControl("")); // Limit answers to 4
-    } else {
-      alert("You can only add up to 4 answers.");
-    }
+    this.myService.addAnswer(this.questionForm);
   }
 
-  // Removes an answer at the specified index
+  /**
+   * Odstraní odpověď na zadaném indexu.
+   * Zavolá službu pro odstranění odpovědi.
+   * @param index - Index odpovědi, která bude odstraněna.
+   */
   removeAnswer(index: number) {
-    const answersArray = this.questionForm.get('answers') as FormArray;
-    if (answersArray.length > 1) {
-      answersArray.removeAt(index); // Remove answer at index
-      this.validateAnswers(); // Validate after removal
-    }
+    this.myService.removeAnswer(this.questionForm, index);
   }
 
-  // Removes an answer with a confirmation prompt
+  /**
+   * Zobrazuje dialog pro potvrzení odstranění odpovědi.
+   * Pokud uživatel potvrdí odstranění, zavolá metodu removeAnswer.
+   * @param index - Index odpovědi, která bude odstraněna.
+   */
   removeAnswerWithModal(index: number) {
-    const answersArray = this.questionForm.get('answers') as FormArray;
-    if (answersArray.length > 1 && confirm("Are you sure you want to remove this answer?")) {
-      answersArray.removeAt(index); // Remove answer if confirmed
-      this.validateAnswers(); // Validate after removal
+    if (confirm("Are you sure you want to remove this answer?")) {
+      this.removeAnswer(index); // Odstraní odpověď, pokud je potvrzeno
     }
   }
 
-  // Ensures there is at least one answer control and removes empty ones
-  validateAnswers() {
-    const answersArray = this.questionForm.get('answers') as FormArray;
-    answersArray.controls.forEach((control, index) => {
-      if (!control.value || control.value.trim() === "") {
-        answersArray.removeAt(index); // Remove empty answer controls
-      }
-    });
-
-    // Ensure at least one empty answer control remains for user convenience
-    if (answersArray.length === 0) {
-      answersArray.push(new FormControl("")); // Add a new answer control if empty
-    }
-  }
-
-  // Selects a question to toggle the visibility of its answers
+  /**
+   * Vybere otázku a přepne zobrazení odpovědí (zobrazení/skrytí).
+   * @param index - Index otázky, kterou uživatel vybere.
+   */
   selectQuestion(index: number) {
     this.selectedQuestion = index;
-    this.questions[index].showAnswers = !this.questions[index].showAnswers; // Toggle answers visibility
+    this.questions[index].showAnswers = !this.questions[index].showAnswers; // Přepínání zobrazení odpovědí
   }
 
-  // Opens the modal to add a new question
+  /**
+   * Otevře modal pro přidání nové otázky.
+   * Resetuje formulář pro přidání nové otázky.
+   */
   openModal() {
-    this.resetForm(); // Reset form to default state
-    this.modal.present(); // Show modal
+    this.myService.resetForm(this.questionForm); // Reset formuláře
+    this.modal.present(); // Zobrazení modalu
   }
 
-  // Removes the selected question from the list
+  /**
+   * Odstraní vybranou otázku.
+   * Zavolá službu pro odstranění otázky a následně uloží stav.
+   */
   removeQuestion() {
-    if (this.selectedQuestion !== null) {
-      this.questions.splice(this.selectedQuestion, 1); // Remove selected question
-      this.selectedQuestion = null; // Deselect question
-      this.saveState(); // Save updated state
-    }
+    this.myService.removeQuestion(this.selectedQuestion, this.questions); // Zavolání služby pro odstranění otázky
+    this.selectedQuestion = null; // Zrušení výběru otázky
+    this.saveState(); // Uložení stavu
   }
 
-  // Prepares the form for editing the selected question
+  /**
+   * Příprava formuláře pro úpravu vybrané otázky.
+   * Pokud je otázka vybrána, naplní formulář existujícími hodnotami.
+   */
   modifyQuestion() {
     if (this.selectedQuestion !== null) {
-      const questionToEdit = this.questions[this.selectedQuestion];
-      this.questionForm.patchValue({
-        question: questionToEdit.question
-      });
-
-      const answersArray = this.questionForm.get('answers') as FormArray;
-      answersArray.clear();
-      questionToEdit.answers.forEach((answer: string) => {
-        answersArray.push(new FormControl(answer)); // Populate the form with existing answers
-      });
-
-      this.isEditing = true; // Mark the form as being in edit mode
-      this.modal.present(); // Show modal for editing
+      this.myService.modifyQuestion(this.questionForm, this.selectedQuestion, this.questions); // Zavolání služby pro úpravu otázky
+      this.isEditing = true; // Nastavení režimu úpravy
+      this.modal.present(); // Zobrazení modalu pro úpravu
     }
   }
 
-  // Confirms the question creation or modification
+  /**
+   * Potvrzení přidání nebo úpravy otázky.
+   * Validuje odpovědi a přidá/aktualizuje otázku v seznamu.
+   */
   confirm() {
-    this.validateAnswers(); // Validate answers before confirming
-
-    const questionData = this.questionForm.value;
-    if (this.isEditing) {
-      if (this.selectedQuestion !== null) {
-        // Edit the selected question
-        this.questions[this.selectedQuestion] = {
-          question: questionData.question,
-          answers: questionData.answers,
-          showAnswers: false
-        };
-      }
-    } else {
-      // Add a new question
-      this.questions.push({
-        question: questionData.question,
-        answers: questionData.answers,
-        showAnswers: false
-      });
-    }
-    this.saveState(); // Save updated questions state
-    this.modal.dismiss(); // Close the modal
-    this.isEditing = false; // Reset editing flag
+    this.myService.validateAnswers(this.questionForm); // Validace odpovědí
+    this.myService.confirm(this.questionForm, this.questions, this.selectedQuestion, this.isEditing); // Zavolání služby pro potvrzení
+    this.saveState(); // Uložení stavu
+    this.modal.dismiss(); // Zavření modalu
+    this.isEditing = false; // Reset režimu úpravy
   }
 
-  // Resets the form for adding a new question
-  resetForm() {
-    this.questionForm.reset(); // Reset form values
-    const answersArray = this.questionForm.get('answers') as FormArray;
-    answersArray.clear(); // Clear answers array
-    answersArray.push(new FormControl("")); // Add a new empty answer control
-  }
-
-  // Closes the modal without saving
+  /**
+   * Zavře modal bez uložení změn.
+   * Resetuje formulář pro novou otázku.
+   */
   cancel() {
-    this.modal.dismiss(); // Close modal
-    this.resetForm(); // Reset form to initial state
+    this.modal.dismiss(); // Zavření modalu
+    this.myService.resetForm(this.questionForm); // Reset formuláře
   }
 
-  // Loads the state from local storage (or Preferences)
+  /**
+   * Načte stav otázek ze služby (například z localStorage nebo jiného úložiště).
+   * Nastaví seznam otázek podle uložených dat.
+   */
   async loadState() {
-    const { value } = await Preferences.get({ key: 'questions' });
-    if (value) {
-      this.questions = JSON.parse(value); // Parse and load stored questions
-    }
+    this.questions = await this.myService.loadState(); // Zavolání služby pro načtení stavu
   }
 
-  // Saves the state to local storage (or Preferences)
+  /**
+   * Uloží aktuální stav otázek do služby.
+   * Uloží otázky (například do localStorage nebo jiného úložiště).
+   */
   async saveState() {
-    await Preferences.set({ key: 'questions', value: JSON.stringify(this.questions) });
+    await this.myService.saveState(this.questions); // Zavolání služby pro uložení stavu
   }
 
-  // Optional function to handle modal dismissal if needed
+  /**
+   * Funkce pro zpracování události zavření modalu.
+   * Může být použita pro další logiku před zavřením modalu.
+   * @param event - Událost zavření modalu.
+   */
   onWillDismiss(event: any) {
-    // Handle modal dismissal events
+    // Tato funkce je volitelná, zde můžete přidat libovolnou logiku před zavřením modalu
+    console.log('Modal will be dismissed', event);
   }
 
-  // Placeholder for a method to navigate back to the previous page
+  /**
+   * Funkce pro návrat na předchozí stránku.
+   * Zavolá metodu window.history.back() pro návrat na předchozí stránku v historii prohlížeče.
+   */
   goBack() {
-    // Implement navigation logic to go back to the previous page
-    }
+    window.history.back(); // Funkce pro návrat zpět
+  }
 }
