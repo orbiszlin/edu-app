@@ -21,7 +21,6 @@ ion-header {
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: flex-start;
   gap: 64px;
 }
 
@@ -36,10 +35,10 @@ ion-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 1px;
+  margin: 0 5px;
 }
 
-.avatar {
+.podium-item .avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -47,7 +46,7 @@ ion-header {
   margin-bottom: 10px;
 }
 
-.avatar img {
+.podium-item .avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -82,16 +81,16 @@ ion-header {
   cursor: pointer;
 }
 
-.gold {
+.medal.gold {
   background-color: gold;
 }
 
-.silver {
+.medal.silver {
   background-color: silver;
 }
 
-.bronze {
-  background-color: #cd7f32 ;
+.medal.bronze {
+  background-color: #cd7f32;
 }
 
 .buttons-horizontal {
@@ -99,20 +98,13 @@ ion-header {
   justify-content: center;
   gap: 3rem;
   margin-top: 20px;
-
-
 }
 
 ion-button {
   color: var(--ion-color-light);
   border-radius: 15px;
-  width: auto;
+  background: var(--ion-color-secondary);
   margin: 0 5px;
-  background: var(--ion-color-secondary);
-}
-
-ion-button:hover {
-  background: var(--ion-color-secondary);
 }
 
 .modal-content {
@@ -135,10 +127,12 @@ ion-button:hover {
     font-size: 1.2em;
     height: 50px;
   }
+
   .buttons-horizontal {
     flex-direction: column;
     align-items: center;
   }
+
   .podium {
     flex-direction: column;
   }
