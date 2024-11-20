@@ -33,25 +33,6 @@ export class MyService {
     await Preferences.set({ key: 'questions', value: JSON.stringify(questions) });
   }
 
-  /**
-   * Validuje odpovědi ve formuláři.
-   * Zajišťuje, že všechny odpovědi nebudou prázdné. Pokud jsou prázdné odpovědi, jsou odstraněny.
-   * Pokud po odstranění odpovědí není žádná odpověď, přidá novou prázdnou odpověď.
-   * @param {FormGroup} questionForm - Formulář s otázkou a odpověďmi.
-   */
-  validateAnswers(questionForm: FormGroup): void {
-    const answersArray = questionForm.get('answers') as FormArray;
-    answersArray.controls.forEach((control, index) => {
-      if (!control.value || control.value.trim() === "") {
-        answersArray.removeAt(index); // Odstraní prázdné odpovědi
-      }
-    });
-
-    // Pokud už není žádná odpověď, přidá novou prázdnou
-    if (answersArray.length === 0) {
-      answersArray.push(new FormControl("")); // Přidá novou prázdnou odpověď
-    }
-  }
 
   /**
    * Přidá novou odpověď do formuláře.
@@ -105,13 +86,12 @@ export class MyService {
   /**
    * Potvrdí změny nebo přidání nové otázky.
    * Pokud je aktivní režim úpravy, aktualizuje existující otázku, jinak přidá novou.
-   * @param {FormGroup} questionForm - Formulář s otázkou a odpovědmi.
+   * @param {FormGroup} questionData - Formulář s otázkou a odpovědmi.
    * @param {any[]} questions - Seznam otázek, který bude upraven.
    * @param {number | null} selectedQuestion - Index vybrané otázky (null, pokud je nová otázka).
    * @param {boolean} isEditing - Určuje, zda je otázka upravována nebo přidávána nová.
    */
-  confirm(questionForm: FormGroup, questions: any[], selectedQuestion: number | null, isEditing: boolean): void {
-    const questionData = questionForm.value;
+  confirm(questionData: any, questions: any[], selectedQuestion: number | null, isEditing: boolean): void {
     if (isEditing) {
       if (selectedQuestion !== null) {
         // Edituje vybranou otázku

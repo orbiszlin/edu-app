@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl} from '@angular/forms';
+import {ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl, Validators} from '@angular/forms';
 import {MyService} from '../services/my-service.service'; // Importujeme službu
 import {QuestionModel} from '../models/questions.model'; // Importujeme model otázek
 import {
@@ -82,11 +82,11 @@ export class QuestionsPage implements OnInit {
    */
   initializeForm() {
     this.questionForm = new FormGroup({
-      question: new FormControl(""),
+      question: new FormControl("", [Validators.required]),
       // answers: new FormArray([new FormControl("")]), // Jedna prázdná odpověď na začátku
       answers: new FormArray([
         new FormGroup({
-          answer: new FormControl(''),
+          answer: new FormControl('', [Validators.required]),
           correct: new FormControl(false),
         })
       ]), // Jedna prázdná odpověď na začátku
@@ -195,8 +195,11 @@ export class QuestionsPage implements OnInit {
    * Validuje odpovědi a přidá/aktualizuje otázku v seznamu.
    */
   confirm() {
-    this.myService.validateAnswers(this.questionForm); // Validace odpovědí
-    // TODO: this.myService.confirm(this.questionForm, this.questions, this.selectedQuestion, this.isEditing); // Zavolání služby pro potvrzení
+    if(this.questionForm.invalid){
+      alert("Máš to blbě!")
+      return;
+    }
+    this.myService.confirm(this.questionForm.value, this.questions, this.selectedQuestion, this.isEditing); // Zavolání služby pro potvrzení
     this.saveState(); // Uložení stavu
     this.modal.dismiss(); // Zavření modalu
     this.isEditing = false; // Reset režimu úpravy
