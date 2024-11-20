@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import {QuestionModel} from "../models/questions.model";
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class MyService {
    * Pokud otázky nejsou nalezeny, vrátí prázdné pole.
    * @returns {Promise<{ question: string; answers: string[]; showAnswers: boolean }[]>} - Seznam otázek a odpovědí.
    */
-  async loadState(): Promise<{ question: string; answers: string[]; showAnswers: boolean }[]> {
+  async loadState(): Promise<QuestionModel[]> {
     const { value } = await Preferences.get({ key: 'questions' });
     if (value) {
       return JSON.parse(value); // Pokud otázky existují, vrátí je jako pole
@@ -28,7 +29,7 @@ export class MyService {
    * @param {Array} questions - Pole otázek a odpovědí.
    * @returns {Promise<void>} - Vrací prázdnou promise, která označuje úspěšné dokončení operace.
    */
-  async saveState(questions: { question: string; answers: string[]; showAnswers: boolean }[]): Promise<void> {
+  async saveState(questions: QuestionModel[]): Promise<void> {
     await Preferences.set({ key: 'questions', value: JSON.stringify(questions) });
   }
 
