@@ -78,8 +78,8 @@
           <ng-container formArrayName="answers">
             <!-- Loop through the answers and display input fields -->
             @for (answer of answersControls; track answer; let i = $index) {
-              <ion-item>
-                <ion-input placeholder="Enter answer {{ i + 1 }}" [formControl]="answer"></ion-input>
+              <ion-item [formGroup]="answer">
+                <ion-input placeholder="Enter answer {{ i + 1 }}" formControlName="answer"></ion-input>
                 <!-- Remove individual answer option -->
                 @if (answersControls.length > 1) {
                   <ion-button fill="clear" (click)="removeAnswer(i)">
@@ -91,7 +91,7 @@
                   <ion-icon name="trash-outline"></ion-icon>
                   Remove Answer
                 </ion-button>
-                <ion-toggle>Correct</ion-toggle>
+                <ion-toggle formControlName="correct">Correct</ion-toggle>
               </ion-item>
             }
           </ng-container>

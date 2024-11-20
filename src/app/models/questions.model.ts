@@ -2,5 +2,5 @@
    question: string,
    answers: string[],
    showAnswers: boolean,
-   isAnswecorrect: boolean,
+   isAnswerCorrect: boolean,
  }

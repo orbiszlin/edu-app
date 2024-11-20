@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
-import { MyService } from '../services/my-service.service'; // Importujeme službu
-import { QuestionModel } from '../models/questions.model'; // Importujeme model otázek
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl} from '@angular/forms';
+import {MyService} from '../services/my-service.service'; // Importujeme službu
+import {QuestionModel} from '../models/questions.model'; // Importujeme model otázek
 import {
   IonButton,
   IonItem,
@@ -21,6 +21,7 @@ import {
   IonModal,
   IonButtons, IonToggle
 } from '@ionic/angular/standalone';
+import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-questions',
@@ -46,7 +47,8 @@ import {
     IonCardContent,
     IonGrid,
     IonButtons,
-    IonToggle
+    IonToggle,
+    JsonPipe
   ],
 })
 export class QuestionsPage implements OnInit {
@@ -64,12 +66,14 @@ export class QuestionsPage implements OnInit {
   // Flag pro režim úpravy
   isEditing: boolean = false;
 
-  constructor(private fb: FormBuilder, private myService: MyService) { }
+  constructor(private fb: FormBuilder, private myService: MyService) {
+  }
 
   ngOnInit() {
     // Inicializace formuláře a načtení stavu
     this.initializeForm();
     this.loadState();
+
   }
 
   /**
@@ -79,7 +83,13 @@ export class QuestionsPage implements OnInit {
   initializeForm() {
     this.questionForm = new FormGroup({
       question: new FormControl(""),
-      answers: new FormArray([new FormControl("")]), // Jedna prázdná odpověď na začátku
+      // answers: new FormArray([new FormControl("")]), // Jedna prázdná odpověď na začátku
+      answers: new FormArray([
+        new FormGroup({
+          answer: new FormControl(''),
+          correct: new FormControl(false),
+        })
+      ]), // Jedna prázdná odpověď na začátku
     });
   }
 
@@ -88,7 +98,7 @@ export class QuestionsPage implements OnInit {
    * Umožňuje přístup k jednotlivým odpovědím formuláře.
    */
   get answersControls() {
-    return (this.questionForm.get('answers') as FormArray).controls as FormControl[];
+    return (this.questionForm.get('answers') as FormArray).controls as FormGroup[];
   }
 
   /**
@@ -96,7 +106,15 @@ export class QuestionsPage implements OnInit {
    * Zavolá službu pro přidání odpovědi.
    */
   addAnswer() {
-    this.myService.addAnswer(this.questionForm);
+    const answersArray = this.questionForm.get('answers') as FormArray;
+    if (answersArray.length < 4) {
+      answersArray.push(new FormGroup({
+        answer: new FormControl(''),
+        correct: new FormControl(false),
+      })); // Limit odpovědí na 4
+    } else {
+      alert("You can only add up to 4 answers.");
+    }
   }
 
   /**
@@ -105,7 +123,10 @@ export class QuestionsPage implements OnInit {
    * @param index - Index odpovědi, která bude odstraněna.
    */
   removeAnswer(index: number) {
-    this.myService.removeAnswer(this.questionForm, index);
+    const answersArray = this.questionForm.get('answers') as FormArray;
+    if (answersArray.length > 1) {
+      answersArray.removeAt(index); // Odstraní odpověď
+    }
   }
 
   /**
@@ -133,7 +154,17 @@ export class QuestionsPage implements OnInit {
    * Resetuje formulář pro přidání nové otázky.
    */
   openModal() {
-    this.myService.resetForm(this.questionForm); // Reset formuláře
+    // this.myService.resetForm(this.questionForm); // Reset formuláře
+    this.questionForm.reset({
+      question: "",
+      answers: [{
+        answer: "",
+        correct: false,
+      }]
+    });
+    // const answersArray = questionForm.get('answers') as FormArray;
+    // answersArray.clear();
+    // answersArray.push(new FormControl("")); // Přidá novou prázdnou odpověď
     this.modal.present(); // Zobrazení modalu
   }
 
@@ -153,7 +184,7 @@ export class QuestionsPage implements OnInit {
    */
   modifyQuestion() {
     if (this.selectedQuestion !== null) {
-      this.myService.modifyQuestion(this.questionForm, this.selectedQuestion, this.questions); // Zavolání služby pro úpravu otázky
+      // TODO: this.myService.modifyQuestion(this.questionForm, this.selectedQuestion, this.questions); // Zavolání služby pro úpravu otázky
       this.isEditing = true; // Nastavení režimu úpravy
       this.modal.present(); // Zobrazení modalu pro úpravu
     }
@@ -165,7 +196,7 @@ export class QuestionsPage implements OnInit {
    */
   confirm() {
     this.myService.validateAnswers(this.questionForm); // Validace odpovědí
-    this.myService.confirm(this.questionForm, this.questions, this.selectedQuestion, this.isEditing); // Zavolání služby pro potvrzení
+    // TODO: this.myService.confirm(this.questionForm, this.questions, this.selectedQuestion, this.isEditing); // Zavolání služby pro potvrzení
     this.saveState(); // Uložení stavu
     this.modal.dismiss(); // Zavření modalu
     this.isEditing = false; // Reset režimu úpravy
@@ -177,7 +208,7 @@ export class QuestionsPage implements OnInit {
    */
   cancel() {
     this.modal.dismiss(); // Zavření modalu
-    this.myService.resetForm(this.questionForm); // Reset formuláře
+    // TODO: this.myService.resetForm(this.questionForm); // Reset formuláře
   }
 
   /**

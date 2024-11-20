@@ -57,6 +57,7 @@ export class MyService {
    * Přidá novou odpověď do formuláře.
    * Limit odpovědí je stanoven na 4. Pokud je již přidáno 4 odpovědí, zobrazení upozornění.
    * @param {FormGroup} questionForm - Formulář s otázkou a odpovědmi.
+   * @deprecated
    */
   addAnswer(questionForm: FormGroup): void {
     const answersArray = questionForm.get('answers') as FormArray;
@@ -72,6 +73,7 @@ export class MyService {
    * Pokud existuje více než jedna odpověď, vybraná odpověď je odstraněna.
    * @param {FormGroup} questionForm - Formulář s otázkou a odpovědmi.
    * @param {number} index - Index odpovědi, kterou je potřeba odstranit.
+   * @deprecated
    */
   removeAnswer(questionForm: FormGroup, index: number): void {
     const answersArray = questionForm.get('answers') as FormArray;
@@ -144,6 +146,7 @@ export class MyService {
    * Resetuje formulář pro zadávání nové otázky.
    * Vyčistí všechny hodnoty a přidá jednu prázdnou odpověď.
    * @param {FormGroup} questionForm - Formulář, který bude resetován.
+   * @deprecated
    */
   resetForm(questionForm: FormGroup): void {
     questionForm.reset();
