@@ -1,6 +1,6 @@
  export interface QuestionModel {
    question: string,
-   answers: string[],
+   answers: { answer: string, correct: boolean }[],
    showAnswers: boolean,
    isAnswerCorrect: boolean,
  }

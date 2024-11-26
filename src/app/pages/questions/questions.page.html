@@ -1,10 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <!-- Title displayed at the top of the page -->
-    <ion-title class="center-title">Manage Questions</ion-title>
+    <ion-title class="center-title">Questions list</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <!-- Grid layout for arranging the content -->
   <ion-grid class="ion-padding">
@@ -39,9 +37,9 @@
               <!-- Display answers if the question is selected -->
               @if (question.showAnswers) {
                 <ion-list>
-                  @for (answer of question.answers; track answer) {
+                  @for (item of question.answers; track $index) {
                     <ion-item>
-                      <ion-label>{{ answer }}</ion-label>
+                      <ion-label>{{ item.answer}}</ion-label>
                     </ion-item>
                   }
                 </ion-list>

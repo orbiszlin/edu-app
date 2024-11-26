@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl, Validators} from '@angular/forms';
-import {MyService} from '../services/my-service.service'; // Importujeme službu
-import {QuestionModel} from '../models/questions.model'; // Importujeme model otázek
+import {MyService} from '../../services/my-service.service';
+import {QuestionModel} from '../../models/questions.model';
 import {
   IonButton,
   IonItem,
@@ -195,7 +195,7 @@ export class QuestionsPage implements OnInit {
    * Validuje odpovědi a přidá/aktualizuje otázku v seznamu.
    */
   confirm() {
-    if(this.questionForm.invalid){
+    if (this.questionForm.invalid) {
       alert("Máš to blbě!")
       return;
     }
