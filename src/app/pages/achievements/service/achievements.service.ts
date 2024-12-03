@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Achievement } from "../../../models/achievemets.model";
 
 @Injectable({
   providedIn: 'root',  // This service will be available globally
 })
 export class AchievementsService {
-  private achievements: {
-    title: string;
-    svg: string;
-    text: string;
-    expanded: boolean;
-    unlocked: boolean;  // Achievement Unlock Status
-  }[] = [
+  private achievements: Achievement [] = [
     { svg: '/assets/AchievementsIcon/GameWinner.svg', title: 'Game Winner', text: 'Win the game', expanded: false, unlocked: false },
     { svg: 'assets/AchievementsIcon/FieldStealer.svg', title: 'Field Stealer', text: 'Steal your opponent\'s field', expanded: false, unlocked: false },
     { svg: 'assets/AchievementsIcon/FieldConqueror.svg', title: 'Field Conqueror', text: 'Acquire blank field', expanded: false, unlocked: false },
@@ -36,7 +31,7 @@ export class AchievementsService {
   constructor() { }
 
   // Method to get a list of all achievements
-  getAchievements() {
+  getAchievements(): Achievement[] {
     return [...this.achievements];
   }
 

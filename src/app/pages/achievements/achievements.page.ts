@@ -6,6 +6,8 @@ import {
   IonTitle,
   IonToolbar
 } from '@ionic/angular/standalone';
+import {Achievement} from "../../models/achievemets.model";
+
 
 @Component({
   selector: 'app-achievements',
@@ -20,7 +22,9 @@ import {
   ]
 })
 export class AchievementsPage implements OnInit {
-  squares: { title: string; svg: string; text: string; expanded: boolean }[] = [];
+  squares:Achievement[] = [];
+
+
   clickedSquare: number | null = null;  // To track which square was clicked
 
   constructor(private achievementsService: AchievementsService) {}  // Dependence on the service
