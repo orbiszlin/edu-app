@@ -1,0 +1,106 @@
+/* Container for centering content */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+}
+
+/* Completion banner for achievement progress */
+.completion-banner {
+  width: 324px;
+  height: 86px;
+  background-color: var(--ion-color-secondary);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ion-color-secondary-contrast);
+}
+
+.completion-banner .banner-text {
+  font-size: 38px;
+}
+
+/* Grid layout for achievement squares */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 164px);
+  grid-template-rows: repeat(4, 121px);
+  gap: 8px;
+  justify-content: center;
+}
+
+/* Styles for each square in the grid */
+.square {
+  position: relative; /* For the pseudo-element */
+  background-color: var(--ion-color-primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 164px;
+  height: 121px;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+  z-index: 1; /* Normal square has basic priority */
+}
+
+/* Styles when a square is expanded */
+.square.expanded {
+  transform: scale(1.5); /* Enlarges the square on click */
+  background-color: var(--ion-color-secondary); /* Outer color (fill) */
+  z-index: 10; /* Ensures the expanded square is above the others */
+}
+
+.square.expanded::before {
+  content: '';
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  background-color: var(--ion-color-primary); /* Inner color (path) */
+  border-radius: 5px; /* Maintains rounding */
+  z-index: 0; /* The pseudo-element is below text and icons */
+}
+
+/* Container for the SVG icons inside squares */
+.svg-slot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg-slot img {
+  width: 50px;
+  height: 50px;
+}
+
+/* Title inside the expanded square */
+.square-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--ion-color-secondary-contrast);
+  text-align: center;
+  margin-bottom: 5px;
+  position: relative; /* Ensures the text stays above the pseudo-element */
+  z-index: 2; /* Text will be above the pseudo-element */
+}
+.square.unlocked {
+  background-color: var(--ion-color-success) !important;  /* This green color is used for completed achievements */
+  border: 2px solid var(--ion-color-primary);
+
+}
+
+/* Text inside the expanded square */
+.square-text {
+  color: var(--ion-color-secondary-contrast);
+  font-size: 15px;
+  text-align: center;
+  position: relative; /* Ensures visibility above the pseudo-element */
+  z-index: 2; /* Text will be above the pseudo-element */
+}

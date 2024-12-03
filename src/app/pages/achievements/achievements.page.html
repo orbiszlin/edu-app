@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Achievements</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <!-- Completion banner showing completion percentage -->
+    <div class="completion-banner">
+      <span class="banner-text">Complete (-%)</span>
+    </div>
+
+    <!-- Grid of achievements with 20 squares in a 5x4 layout -->
+    <div class="grid-container">
+      @for (square of squares; track square; let index = $index) {
+        <div
+          class="square"
+          (click)="toggleText(index)"
+          [class.expanded]="square.expanded">
+          @if (!square.expanded) {
+            <div class="svg-slot">
+              <!-- SVG for each square when it is not expanded -->
+              <img [src]="square['svg']" alt="AchievementsIcon" />
+            </div>
+          }
+          <!-- Expanded view showing title and description -->
+          @if (square.expanded) {
+            <div>
+              <div class="square-title">{{ square.title }}</div>
+              <div class="square-text">{{ square.text }}</div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</ion-content>

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Avatar, User} from "../../models/user.model";
 import {
@@ -15,6 +15,7 @@ import {
 import {debounceTime} from "rxjs";
 import {addIcons} from "ionicons";
 import {createOutline} from "ionicons/icons";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-avatar-settings',
