@@ -37,5 +37,14 @@ export class ClientService {
     this.hexMap = map;
   }
 
-
+  // Retrieve the saved map data as an observable
+  getMapData(): Observable<HexMapModel> {
+    if (this.hexMap) {
+      // If hexMap is already set, return it as an observable
+      return of(this.hexMap);
+    } else {
+      // If hexMap is not set, fetch a new map and save it
+      return this.startNewGame();
+    }
+  }
 }
