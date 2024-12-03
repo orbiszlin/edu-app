@@ -10,11 +10,11 @@ export interface AnswerModel {
 }
 
 /*const žid: QuestionModel = {
-  question: "mrdko",
+  question: "",
   answers: [{
-    answer: "odpoved",
+    answer: "",
     correct: false},
-    {answer: "odpoved",
+    {answer: "",
     correct: true}],
   showAnswers: false,
 }*/
