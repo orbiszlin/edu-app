@@ -21,7 +21,7 @@
 
   <ion-list>
     <ion-radio-group [(ngModel)]="selectedAnswer">
-      <ion-item *ngFor="let option of questions[currentQuestionIndex]?.options"
+      <ion-item *ngFor="let option of questions[currentQuestionIndex].options"
                 [ngClass]="getAnswerClass(option.value)">
         <ion-label>{{ option.label }}</ion-label>
         <ion-radio shlot="start" [value]="option.value"></ion-radio>
