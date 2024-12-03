@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AnswService } from '../../services/answ.service';
+import { AnswersService } from '../../services/answers.service';
 import {
   IonButton,
   IonCol,
@@ -53,7 +53,7 @@ export class AnswersPage implements OnInit {
   answerFeedback: string | null = null;
   remainingTime: string = ''; // Lze využít pro časový limit
 
-  constructor(private answService: AnswService) {}
+  constructor(private answService: AnswersService) {}
 
   ngOnInit() {
     this.initializeQuiz();

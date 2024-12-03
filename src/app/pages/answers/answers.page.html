@@ -24,7 +24,7 @@
       <ion-item *ngFor="let option of questions[currentQuestionIndex].options"
                 [ngClass]="getAnswerClass(option.value)">
         <ion-label>{{ option.label }}</ion-label>
-        <ion-radio shlot="start" [value]="option.value"></ion-radio>
+        <ion-radio slot="start" [value]="option.value"></ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>
@@ -32,7 +32,7 @@
   <ion-button expand="full" class="dark-blue-button" (click)="submitAnswer()">Odeslat odpověď</ion-button>
 
   <div class="feedback-container" *ngIf="answerFeedback">
-    <div [ngClass]="{'correct-feedbhack': isAnswerCorrect, 'incorrect-feedback': !isAnswerCorrect}">
+    <div [ngClass]="{'correct-feedback': isAnswerCorrect, 'incorrect-feedback': !isAnswerCorrect}">
       {{ answerFeedback }}
     </div>
   </div>
