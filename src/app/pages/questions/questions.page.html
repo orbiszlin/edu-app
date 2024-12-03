@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="center-title">Questions list</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- Grid layout for arranging the content -->
+  <ion-grid class="ion-padding">
+    <ion-row class="ion-justify-content-between">
+      <!-- Column for the 'Back' button -->
+      <ion-col size="auto">
+        <ion-button (click)="goBack()">Back</ion-button>
+      </ion-col>
+      <!-- Column for 'Add', 'Remove' and 'Modify' buttons -->
+      <ion-col size="auto">
+        <ion-button (click)="openModal()">Add</ion-button>
+        <ion-button (click)="removeQuestion()" [disabled]="selectedQuestion === null">Remove</ion-button>
+        <ion-button (click)="modifyQuestion()" [disabled]="selectedQuestion === null">Modify</ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- Card displaying the list of questions -->
+    <ion-card>
+      <ion-card-content>
+        <ion-list>
+          <!-- Loop through each question and display it -->
+          @for (question of questions; track question; let i = $index) {
+            <ion-item (click)="selectQuestion(i)">
+              <ion-label>{{ question.question }}</ion-label>
+              <!-- Icons to toggle answers visibility -->
+              @if (!question.showAnswers) {
+                <ion-icon name="chevron-down" slot="end"></ion-icon>
+              }
+              @if (question.showAnswers) {
+                <ion-icon name="chevron-up" slot="end"></ion-icon>
+              }
+              <!-- Display answers if the question is selected -->
+              @if (question.showAnswers) {
+                <ion-list>
+                  @for (item of question.answers; track $index) {
+                    <ion-item>
+                      <ion-label>{{ item.answer}}</ion-label>
+                    </ion-item>
+                  }
+                </ion-list>
+              }
+            </ion-item>
+          }
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+
+  <!-- Modal for creating or modifying a question -->
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <!-- Cancel button to close the modal -->
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Question Creation</ion-title>
+          <!-- Confirm button to save the question -->
+          <ion-buttons slot="end">
+            <ion-button (click)="confirm()">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <!-- Form for adding or editing a question -->
+        <form [formGroup]="questionForm">
+          <ion-item>
+            <ion-input placeholder="Enter question" formControlName="question"></ion-input>
+          </ion-item>
+          <ng-container formArrayName="answers">
+            <!-- Loop through the answers and display input fields -->
+            @for (answer of answersControls; track answer; let i = $index) {
+              <ion-item [formGroup]="answer">
+                <ion-input placeholder="Enter answer {{ i + 1 }}" formControlName="answer"></ion-input>
+                <!-- Remove individual answer option -->
+                @if (answersControls.length > 1) {
+                  <ion-button fill="clear" (click)="removeAnswer(i)">
+                    <ion-icon name="remove-circle-outline"></ion-icon>
+                  </ion-button>
+                }
+                <!-- Modal-style removal of answers -->
+                <ion-button fill="clear" (click)="removeAnswerWithModal(i)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                  Remove Answer
+                </ion-button>
+                <ion-toggle formControlName="correct">Correct</ion-toggle>
+              </ion-item>
+            }
+          </ng-container>
+          <!-- Button to add another answer -->
+          <ion-item lines="none">
+            <ion-button (click)="addAnswer()" fill="clear" [disabled]="answersControls.length >= 4">
+              <ion-icon name="add-circle-outline"></ion-icon>
+              Add Answer
+            </ion-button>
+          </ion-item>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
