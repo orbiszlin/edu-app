@@ -33,10 +33,13 @@ export class GamePage implements OnInit, AfterViewInit {
 
   private currentOffsetX: number = 0;
   private currentOffsetY: number = 0;
+  private maxOffsetX: number = 0;
+  private maxOffsetY: number = 0;
 
   // Initializes visible hexes
   private visibleColumns: number = 0;
   private visibleRows: number = 0;
+
 
   constructor(private clientService: ClientService) {
   }
@@ -53,6 +56,8 @@ export class GamePage implements OnInit, AfterViewInit {
       this.img.src = this.baseHex;
       this.img.onload = (): void => {
         this.imageLoaded = true;
+        this.calculateVisibleTiles();
+        this.calculateMapBounds();
         this.drawHexMap();
       };
       this.img.onerror = (err: string | Event): void => {
@@ -74,6 +79,19 @@ export class GamePage implements OnInit, AfterViewInit {
     // Gaps between the tiles are needed to be accounted as well
     this.visibleColumns = Math.ceil(this.viewportWidth / (this.hexWidth + this.hexGapX));
     this.visibleRows = Math.ceil(this.viewportHeight / (this.hexHeight + this.hexGapY));
+  }
+
+  // Function to calculate max offset to restrict camera movement within the map bounds
+  private calculateMapBounds() {
+    if (!this.mapData) return;
+
+    // Total map width and height based on hex size, gaps and grid size
+    const totalMapWidth: number = this.mapData.columnsCount * (this.hexWidth + this.hexGapX);
+    const totalMapHeight: number = this.mapData.columnsCount * (this.hexHeight + this.hexGapY) * 0.75;
+
+    // Set max offsets by subtracting viewport dimension
+    this.maxOffsetX = totalMapWidth - this.viewportWidth;
+    this.maxOffsetY = totalMapHeight - this.viewportHeight;
   }
 
   private drawHexMap(): void {
