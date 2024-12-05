@@ -34,7 +34,9 @@ export class GamePage implements OnInit, AfterViewInit {
   private currentOffsetX: number = 0;
   private currentOffsetY: number = 0;
 
-
+  // Initializes visible hexes
+  private visibleColumns: number = 0;
+  private visibleRows: number = 0;
 
   constructor(private clientService: ClientService) {
   }
@@ -57,6 +59,21 @@ export class GamePage implements OnInit, AfterViewInit {
         console.error("Error loading SVG: ", err);
       };
     });
+  }
+
+  // Functions to calculate which hexes to draw
+  private calculateVisibleTiles(): void {
+    const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
+    //Set canvas width and height to window's inner width and height
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    this.viewportWidth = canvas.width;
+    this.viewportHeight = canvas.height;
+
+    // Calculate the number of visible columns and rows
+    // Gaps between the tiles are needed to be accounted as well
+    this.visibleColumns = Math.ceil(this.viewportWidth / (this.hexWidth + this.hexGapX));
+    this.visibleRows = Math.ceil(this.viewportHeight / (this.hexHeight + this.hexGapY));
   }
 
   private drawHexMap(): void {
