@@ -48,7 +48,7 @@ export class GamePage implements OnInit, AfterViewInit {
   private touchStartY: number = 0;
   private isTouching: boolean = false;
 
-  @ViewChild('canvas', {static: false}) canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
   // HostListener to capture arrow key presses
   @HostListener('window:keydown', ['$event'])
@@ -107,14 +107,13 @@ export class GamePage implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.clientService.hideMenu() // Hides app component
+    //this.clientService.hideMenu() // Hides app component
     return;
   }
 
   ngAfterViewInit(): void {
     this.clientService.getMapData().subscribe(map => {
       this.mapData = map;
-      console.log('mapData \n', map);
       this.img.src = this.baseHex;
       this.img.onload = (): void => {
         this.imageLoaded = true;
