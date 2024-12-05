@@ -53,3 +53,25 @@ ion-modal ion-toolbar {
   --background: rgb(14 116 144);
   --color: white;
 }
+
+.avatars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 118px);
+  justify-content: center;
+
+  .avatar-radio {
+    position: relative;
+
+    ion-radio {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      &::part(container) {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+      }
+    }
+  }
+}

@@ -1,20 +1,30 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Avatar, User} from "../../models/user.model";
+import {Avatar} from "../../models/user.model";
 import {
   IonButton,
-  IonButtons, IonCol,
-  IonContent, IonFab, IonFabButton,
+  IonButtons,
+  IonCol,
+  IonContent,
+  IonFab,
+  IonFabButton,
   IonGrid,
-  IonHeader, IonIcon, IonInput,
-  IonMenuButton, IonModal, IonRadio, IonRadioGroup, IonRow,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonMenuButton,
+  IonModal,
+  IonRadio,
+  IonRadioGroup,
+  IonRow,
   IonTitle,
   IonToolbar
 } from '@ionic/angular/standalone';
 import {debounceTime} from "rxjs";
 import {addIcons} from "ionicons";
 import {createOutline} from "ionicons/icons";
+import {AvatarSettingsService} from "../../services/avatar-settings/avatar-settings.service";
 
 @Component({
   selector: 'app-avatar-settings',
@@ -25,32 +35,26 @@ import {createOutline} from "ionicons/icons";
 })
 export class AvatarSettingsPage implements OnInit {
 
-  user: User;
+
   avatarCopy: Avatar;
   avatarBodyNames = [
     "avatar",
     "orange",
+    "blue",
+    "purple",
+    "pink",
+    "light",
   ]
 
   username = new FormControl<string>("", [Validators.required]);
 
-  constructor() {
+  constructor(private service: AvatarSettingsService) {
     addIcons({
       createOutline
     })
 
-    this.user = {
-      id: 0,
-      username: "lojza",
-      email: "neco@orbiszlin.cz",
-      password: "string",
-      avatar: {
-        bodyName: "avatar",
-        hatId: 0,
-        alias: "avatar.svg",
-      }
-    }
-    this.avatarCopy = this.user.avatar;
+
+    this.avatarCopy = service.getAvatarCopy();
 
     this.username.setValue(this.avatarCopy.alias, {
       emitEvent: false
@@ -60,7 +64,6 @@ export class AvatarSettingsPage implements OnInit {
       if (data != null) {
         this.avatarCopy.alias = data;
       }
-      console.log(data);
     })
   }
 
@@ -70,7 +73,7 @@ export class AvatarSettingsPage implements OnInit {
 
   saveAvatar(): void {
     if (this.username.valid) {
-      console.log(this.username.value)
+      console.log(this.avatarCopy);
     }
     return;
   }

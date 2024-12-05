@@ -39,11 +39,11 @@
             <ion-button color="light" (click)="modal.dismiss()">Close</ion-button>
           </ion-buttons>
         </ion-toolbar>
-        <ion-radio-group value="strawberries" (ionChange)="setAvatar($event)">
-          <div style="display: flex;flex-wrap: wrap;justify-content: space-around;">
+        <ion-radio-group [value]="avatarCopy.bodyName" (ionChange)="setAvatar($event)">
+          <div class="avatars-grid">
             @for (avatarBodyName of avatarBodyNames; track avatarBodyName) {
-              <div style="position: relative;">
-                <ion-radio [value]="avatarBodyName" style="position: absolute;width: 100%;height: 100%"></ion-radio>
+              <div class="avatar-radio">
+                <ion-radio [value]="avatarBodyName"></ion-radio>
                 <img [src]="'assets/avatars/' + avatarBodyName + '.svg'" alt="avatar">
               </div>
             }
