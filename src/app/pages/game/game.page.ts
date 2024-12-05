@@ -224,18 +224,19 @@ export class GamePage implements OnInit, AfterViewInit {
 
       context.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Only draw visible tiles within the current viewport
+      // Only draw tiles that are within the visible area
       for (let colIdx = 0; colIdx < gridWidth; colIdx++) {
         for (let rowIdx = 0; rowIdx < gridHeight; rowIdx++) {
-          const posX: number = colIdx * (this.hexWidth + gapX) + (rowIdx % 2 === 1 ? (this.hexWidth + gapX) / 2 : 0) + this.currentOffsetX;
-          const posY: number = (rowIdx * 3 / 4) * (this.hexHeight + gapY) + this.currentOffsetY;
+          // Calculate the tile's position on the canvas
+          const posX: number = colIdx * (this.hexWidth + this.hexGapX) + (rowIdx % 2 === 1 ? (this.hexWidth + this.hexGapX) / 2 : 0) + this.currentOffsetX;
+          const posY: number = (rowIdx * 3 / 4) * (this.hexHeight + this.hexGapY) + this.currentOffsetY;
 
-          // Check if the tile is within the visible area
+          // Check if the tile is within the viewport
           if (
             posX + this.hexWidth > 0 && posX < this.viewportWidth &&
             posY + this.hexHeight > 0 && posY < this.viewportHeight
           ) {
-            // Draw the hex tile at its current position
+            // Draw the hex tile at the visible position
             context.drawImage(this.img, posX, posY, this.hexWidth, this.hexHeight);
           }
         }
