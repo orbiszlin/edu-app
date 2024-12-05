@@ -27,7 +27,7 @@ export class LoginScreenPage implements OnInit {
       placeholder: 'Code',
       attributes: {
          //type: 'number',// s tímto nefunguje maxlenght, nepoužívat
-        maxlength: 6
+        maxlength: 6,
       },
     },
   ];
