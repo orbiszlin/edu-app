@@ -216,9 +216,6 @@ export class GamePage implements OnInit, AfterViewInit {
     const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
 
     if (context) {
-      const gapX = 2;
-      const gapY = 4;
-
       const gridWidth: number = this.mapData!.columnsCount;
       const gridHeight: number = this.mapData!.rowsCount;
 
