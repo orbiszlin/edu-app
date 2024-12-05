@@ -27,17 +27,20 @@ export class GamePage implements OnInit, AfterViewInit {
   private hexGapX: number = 7;
   private hexGapY: number = 17;
 
+  // Define viewport dimensions
+  private viewportHeight: number = 0;
+  private viewportWidth: number = 0;
+
   private currentOffsetX: number = 0;
   private currentOffsetY: number = 0;
 
-  private viewportHeight: number = 0;
-  private viewportWidth: number = 0;
 
 
   constructor(private clientService: ClientService) {
   }
 
   ngOnInit(): void {
+    this.clientService.hideMenu() // Hides app component
     return;
   }
 
@@ -46,10 +49,14 @@ export class GamePage implements OnInit, AfterViewInit {
       this.mapData = map;
       console.log('mapData \n', map);
       this.img.src = this.baseHex;
+      this.img.onload = (): void => {
+        this.imageLoaded = true;
+        this.drawHexMap();
+      };
       this.img.onerror = (err: string | Event): void => {
         console.error("Error loading SVG: ", err);
-      }
-    })
+      };
+    });
   }
 
   private drawHexMap(): void {

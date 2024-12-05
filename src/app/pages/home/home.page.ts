@@ -22,8 +22,6 @@ export class HomePage implements OnInit {
   }
 
   startGame(): void {
-    this.clientService.hideMenu() // Hides app component
-
     // Generate new map, save it locally and checkout to game page
     this.clientService.startNewGame().subscribe((map: HexMapModel): void => {
       this.clientService.setMapData(map);
