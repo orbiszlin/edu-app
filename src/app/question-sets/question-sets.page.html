@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Dynamic Question Sets</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Dynamic Question Sets</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Tlačítka pro vytvoření a vymazání -->
+  <div class="controls">
+    <ion-input
+      placeholder="Enter group name"
+      [(ngModel)]="newGroupName"
+      clear-input>
+    </ion-input>
+    <ion-button (click)="addGroup()">Add Group</ion-button>
+  </div>
+
+  <!-- Dynamicky generované boxy -->
+  <div class="groups-container">
+    <div *ngFor="let group of groups" class="group-box" (click)="goToGroupDetail(group.id)">
+      <h3>{{ group.name }}</h3>
+      <ion-button color="danger" (click)="removeGroup(group.id)">Delete</ion-button>
+    </div>
+  </div>
+</ion-content>

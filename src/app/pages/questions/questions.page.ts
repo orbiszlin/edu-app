@@ -248,4 +248,5 @@ export class QuestionsPage implements OnInit {
   goBack() {
     window.history.back(); // Funkce pro návrat zpět
   }
+
 }

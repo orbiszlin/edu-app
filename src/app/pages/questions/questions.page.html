@@ -25,26 +25,26 @@
         <ion-list>
           <!-- Loop through each question and display it -->
           @for (question of questions; track question; let i = $index) {
-            <ion-item (click)="selectQuestion(i)">
-              <ion-label>{{ question.question }}</ion-label>
+          <ion-item (click)="selectQuestion(i)">
+            <ion-label>{{ question.question }}</ion-label>
               <!-- Icons to toggle answers visibility -->
               @if (!question.showAnswers) {
-                <ion-icon name="chevron-down" slot="end"></ion-icon>
-              }
-              @if (question.showAnswers) {
-                <ion-icon name="chevron-up" slot="end"></ion-icon>
-              }
-              <!-- Display answers if the question is selected -->
-              @if (question.showAnswers) {
-                <ion-list>
-                  @for (item of question.answers; track $index) {
-                    <ion-item>
-                      <ion-label>{{ item.answer}}</ion-label>
+          <ion-icon name="chevron-down" slot="end"></ion-icon>
+          }
+          @if (question.showAnswers) {
+          <ion-icon name="chevron-up" slot="end"></ion-icon>
+          }
+          <!-- Display answers if the question is selected -->
+          @if (question.showAnswers) {
+          <ion-list>
+            @for (item of question.answers; track $index) {
+            <ion-item>
+              <ion-label>{{ item.answer}}</ion-label>
                     </ion-item>
-                  }
-                </ion-list>
-              }
-            </ion-item>
+            }
+          </ion-list>
+          }
+          </ion-item>
           }
         </ion-list>
       </ion-card-content>
@@ -76,21 +76,21 @@
           <ng-container formArrayName="answers">
             <!-- Loop through the answers and display input fields -->
             @for (answer of answersControls; track answer; let i = $index) {
-              <ion-item [formGroup]="answer">
-                <ion-input placeholder="Enter answer {{ i + 1 }}" formControlName="answer"></ion-input>
+            <ion-item [formGroup]="answer">
+              <ion-input placeholder="Enter answer {{ i + 1 }}" formControlName="answer"></ion-input>
                 <!-- Remove individual answer option -->
                 @if (answersControls.length > 1) {
-                  <ion-button fill="clear" (click)="removeAnswer(i)">
-                    <ion-icon name="remove-circle-outline"></ion-icon>
-                  </ion-button>
-                }
-                <!-- Modal-style removal of answers -->
-                <ion-button fill="clear" (click)="removeAnswerWithModal(i)">
-                  <ion-icon name="trash-outline"></ion-icon>
-                  Remove Answer
-                </ion-button>
-                <ion-toggle formControlName="correct">Correct</ion-toggle>
-              </ion-item>
+            <ion-button fill="clear" (click)="removeAnswer(i)">
+              <ion-icon name="remove-circle-outline"></ion-icon>
+            </ion-button>
+            }
+            <!-- Modal-style removal of answers -->
+            <ion-button fill="clear" (click)="removeAnswerWithModal(i)">
+              <ion-icon name="trash-outline"></ion-icon>
+              Remove Answer
+            </ion-button>
+            <ion-toggle formControlName="correct">Correct</ion-toggle>
+          </ion-item>
             }
           </ng-container>
           <!-- Button to add another answer -->
