@@ -51,7 +51,7 @@ export class AnswersPage implements OnInit {
   selectedAnswer: string = '';
   isAnswerCorrect: boolean | null = null;
   answerFeedback: string | null = null;
-  remainingTime: string = ''; // Lze využít pro časový limit
+  remainingTime: number = 90; // Lze využít pro časový limit
 
   constructor(private answService: AnswersService) {}
 
