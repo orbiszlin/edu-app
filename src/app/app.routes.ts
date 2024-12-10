@@ -1,4 +1,4 @@
-import {Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -32,6 +32,11 @@ export const routes: Routes = [
   {
     path: 'podium',
     loadComponent: () => import('./pages/podium/podium.page').then(m => m.PodiumPage)
+  },
+
+  {
+    path: 'answers',
+    loadComponent: () => import('./pages/answers/answers.page').then( m => m.AnswersPage)
   },
 
 ];

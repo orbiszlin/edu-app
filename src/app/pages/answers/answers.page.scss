@@ -1,0 +1,45 @@
+ion-menu {
+  ion-content {
+    --padding-bottom: 20px;
+  }
+
+  ion-list {
+    padding: 20px;
+  }
+
+  ion-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --min-height: 50px;
+    --border-radius: 10px;
+
+    &.correct-answer {
+      --background: #d4edda; /* Světle zelená */
+      --color: #155724; /* Tmavě zelená */
+      border: 1px solid #c3e6cb;
+    }
+
+    &.incorrect-answer {
+      --background: #f8d7da; /* Světle červená */
+      --color: #721c24; /* Tmavě červená */
+      border: 1px solid #f5c6cb;
+    }
+  }
+
+
+}
+
+.feedback-container {
+  margin-top: 20px;
+  text-align: center;
+
+  .correct-feedback {
+    color: #155724; /* Tmavě zelená */
+    font-weight: bold;
+  }
+
+  .incorrect-feedback {
+    color: #721c24; /* Tmavě červená */
+    font-weight: bold;
+  }
+}
